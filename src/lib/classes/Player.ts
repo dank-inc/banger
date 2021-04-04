@@ -15,6 +15,7 @@ export class Player {
   reverse?: boolean
   loop?: boolean
   drift: number
+  loading?: boolean
 
   constructor(params: PlayerParams) {
     this.reverse = params.reverse
@@ -27,11 +28,14 @@ export class Player {
     this.gainNode.gain.value = params.volume || 1
   }
 
-  // connect nodes?
-
-  play = () => {
+  handlePlay = () => {
     if (!this.source) {
-      console.log('Audio not loaded')
+      console.warn('Audio not loaded')
+      return
+    }
+
+    if (this.loading) {
+      console.warn('Source is loading!', this.source)
       return
     }
 

@@ -6,9 +6,10 @@ type Params = PlayerParams & {
   arrayBuffers: ArrayBuffer[]
 }
 
-export class MultiBanger extends Player {
+export class MultiBanger extends Player implements IBanger {
   name: string
   audioBuffers: AudioBuffer[]
+  loading = true
 
   constructor(params: Params) {
     super(params)
@@ -27,11 +28,17 @@ export class MultiBanger extends Player {
     console.log(`Soundbank: ${this.name} loaded!`)
   }
 
-  loadSource = () => {
+  private loadSource = () => {
     this.source = null
     this.source = this.ctx.createBufferSource()
-    this.source.addEventListener('ended', this.loadSource)
+    // this.source.addEventListener('ended', this.loadSource)
     this.source.buffer = Rando.item(this.audioBuffers)
     this.source.connect(this.ctx.destination)
+    this.loading = false
+  }
+
+  play = () => {
+    this.handlePlay()
+    this.loadSource()
   }
 }
