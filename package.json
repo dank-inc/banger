@@ -1,0 +1,21 @@
+{
+  "name": "@dank-inc/banger",
+  "version": "0.1.0",
+  "description": "Typescript Sound Banger",
+  "author": "Elijah Lucian",
+  "license": "MIT",
+  "files": [
+    "lib"
+  ],
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "parcel": "^2.0.0-beta.2",
+    "typescript": "^4.2.3"
+  },
+  "dependencies": {
+    "@dank-inc/numbaz": "^0.3.0"
+  }
+}
