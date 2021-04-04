@@ -2,17 +2,11 @@ import { Rando } from "@dank-inc/numbaz";
 import { Soundbank } from "../types";
 import { getAudioBuffers } from "../utils";
 
-type Params =
-  | {
-      id: string;
-      name?: string;
-      drift?: number;
-    }
-  | {
-      id?: string;
-      name: string;
-      drift?: number;
-    };
+type Params = {
+  id?: string;
+  name?: string;
+  drift?: number;
+};
 
 export interface MultiBanger {
   ctx: AudioContext;

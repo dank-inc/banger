@@ -1,6 +1,7 @@
 // import { getAudioBuffers } from '../utils/api'
 // import { randNormal } from '../utils/numbers'
 
+import { Rando } from "@dank-inc/numbaz";
 import { getAudioBuffers } from "../utils";
 
 // PLAYS A SINGLE SFX with varied pitch!
@@ -74,7 +75,7 @@ export class Banger {
     // this.source.connect(gainNode)
     // gainNode.connect(this.ctx.destination)
 
-    this.source.detune.value = randNormal(100);
+    this.source.detune.value = Rando.normal(100);
     if (this.reverse) this.source.playbackRate.value = -1;
     this.source.start(0);
   };
