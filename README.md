@@ -13,7 +13,7 @@ randomized sounds!
 - pitch variation
 - unlimited polyphony
 
-# DankBanger
+# MultiBanger
 
 - takes a folder of sounds
 - randomizes playing of said sounds
