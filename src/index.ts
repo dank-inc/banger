@@ -1,4 +1,13 @@
-import { Banger, MultiBanger, getWav, getWavs } from './lib'
+import { Banger, MultiBanger, getWav, getWavs, IBanger } from './lib'
+
+const rootEl = document.getElementById('root')
+
+const makeButton = (player: IBanger) => {
+  const playerButton = document.createElement('button')
+  playerButton.addEventListener('click', player.play)
+  playerButton.innerHTML = player.name
+  rootEl.appendChild(playerButton)
+}
 
 const main = async () => {
   const banger = new Banger({
@@ -7,6 +16,8 @@ const main = async () => {
       'https://cwilso.github.io/MIDIDrums/sounds/drum-samples/CR78/kick.wav',
     ),
   })
+
+  makeButton(banger)
 
   const files = [
     'https://cwilso.github.io/MIDIDrums/sounds/drum-samples/CR78/kick.wav',
@@ -21,6 +32,8 @@ const main = async () => {
     name: 'drumz',
     arrayBuffers: await getWavs(files),
   })
+
+  makeButton(multiBanger)
 
   addEventListener('keydown', ({ key }) => {
     if (key === 'e') banger.play()

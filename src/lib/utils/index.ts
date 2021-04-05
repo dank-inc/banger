@@ -25,8 +25,8 @@ export const getWavs = async (urls: string[]): Promise<ArrayBuffer[]> => {
 }
 
 export const getFileList = async (url: string): Promise<string[]> => {
+  // garbage
   try {
-    //
     const res = await fetch(url) // Expects {files: string[]}
     const data = (await res.json()) as { files?: string[] }
     if (!data.files) throw new Error('Wrong data type')
@@ -37,4 +37,6 @@ export const getFileList = async (url: string): Promise<string[]> => {
   }
 }
 
-export const createSoundbankPlayers = async () => {}
+export const createBanger = async () => {
+  // create a banger and allow loading in the thingy
+}

@@ -1,4 +1,5 @@
 import { Rando } from '@dank-inc/numbaz'
+import { IBanger } from '..'
 import { Player, PlayerParams } from './Player'
 
 type Params = PlayerParams & {

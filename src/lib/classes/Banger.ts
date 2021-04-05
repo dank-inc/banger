@@ -1,3 +1,4 @@
+import { IBanger } from '..'
 import { Player, PlayerParams } from './Player'
 
 type Params = PlayerParams & {

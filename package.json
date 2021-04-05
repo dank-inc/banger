@@ -10,6 +10,9 @@
   "main": "lib/index.js",
   "scripts": {
     "start": "parcel src/index.html",
+    "lint": "tsc --noEmit",
+    "compile": "rm -rf lib && tsc",
+    "deploy": "npm run compile && npm publish",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
