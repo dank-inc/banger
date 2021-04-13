@@ -1,13 +1,26 @@
 {
   "name": "@dank-inc/banger",
-  "version": "0.1.0",
-  "description": "Typescript Sound Banger",
+  "version": "0.1.1",
   "author": "Elijah Lucian",
-  "license": "MIT",
+  "description": "Typescript Sound Banger",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dank-inc/banger"
+  },
   "files": [
     "lib"
   ],
   "main": "lib/index.js",
+  "license": "MIT",
+  "keywords": [
+    "typescript",
+    "webaudio",
+    "sound",
+    "audio",
+    "sfx",
+    "bgm",
+    "sound player"
+  ],
   "scripts": {
     "start": "parcel src/index.html",
     "lint": "tsc --noEmit",
