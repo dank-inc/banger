@@ -20,12 +20,20 @@ export class Player {
   constructor(params: PlayerParams) {
     this.reverse = params.reverse
     this.loop = params.loop
-    this.drift = params.drift || 100 // cents
+    this.drift = params.drift || 0 // cents
     this.ctx = new AudioContext()
     this.source = null
 
     this.gainNode = this.ctx.createGain()
     this.gainNode.gain.value = params.volume || 1
+  }
+
+  handleReverse = () => {
+    if (!this.source) return
+  }
+
+  handleStop = () => {
+    this.source?.stop()
   }
 
   handlePlay = () => {

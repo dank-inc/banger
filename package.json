@@ -22,17 +22,19 @@
     "sound player"
   ],
   "scripts": {
-    "start": "parcel src/index.html",
+    "start": "parcel src/index.html --public-url /public",
     "lint": "tsc --noEmit",
     "compile": "rm -rf lib && tsc",
     "deploy": "npm run compile && npm publish",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "@parcel/transformer-typescript-tsc": "^2.0.0-beta.1",
     "parcel": "^2.0.0-beta.2",
     "typescript": "^4.2.3"
   },
   "dependencies": {
-    "@dank-inc/numbaz": "^0.3.0"
+    "@dank-inc/numbaz": "^0.3.0",
+    "@parcel/config-default": "*"
   }
 }

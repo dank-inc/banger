@@ -27,7 +27,7 @@ export class Banger extends Player implements IBanger {
     this.loading = true
     this.source = null
     this.source = this.ctx.createBufferSource()
-    // this.source.addEventListener('ended', this.loadSource)
+
     this.source.loop = true
     this.source.buffer = this.audioBuffer
     this.source.connect(this.ctx.destination)
@@ -35,7 +35,13 @@ export class Banger extends Player implements IBanger {
     this.loading = false
   }
 
-  play = () => {
+  play = async () => {
+    // console.log('state', this.source?.context.state)
+    if (this.loop) {
+      this.handleStop()
+      this.loadSource()
+    }
+
     this.handlePlay()
     this.loadSource()
   }

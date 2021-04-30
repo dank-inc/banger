@@ -1,5 +1,9 @@
 import { Banger, MultiBanger, getWav, getWavs, IBanger } from './lib'
 
+// @ts-ignore
+import tezos from './audio/eli7vh-tezos-till-i-bezos-final.wav'
+console.log(tezos)
+
 const rootEl = document.getElementById('root')
 
 const makeButton = (player: IBanger) => {
@@ -17,7 +21,15 @@ const main = async () => {
     ),
   })
 
+  const ttib = new Banger({
+    name: 'Tezos Till I Bezos',
+    arrayBuffer: await getWav(tezos),
+    drift: 0,
+    loop: true,
+  })
+
   makeButton(banger)
+  makeButton(ttib)
 
   const files = [
     'https://cwilso.github.io/MIDIDrums/sounds/drum-samples/CR78/kick.wav',
