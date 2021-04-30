@@ -8,7 +8,33 @@
   </head>
   <body>
     <h1>The Dankest Banger</h1>
+    <div id="drums"></div>
     <div id="root"></div>
+    <div id="controls">
+      <div id="buttons">
+        <button id="reverse">Reverse</button>
+        <button id="stop">Stop</button>
+        <button id="pause">Pause</button>
+        <button id="play">Play</button>
+      </div>
+      <div id="sliders">
+        <div>
+          <label for="volume">Slider</label>
+          <input type="range" name="volume" id="volume" />
+        </div>
+        <div>
+          <label for="pitch">Slider</label>
+          <input
+            type="range"
+            name="pitch"
+            id="pitch"
+            min="0"
+            step="0.05"
+            max="2"
+          />
+        </div>
+      </div>
+    </div>
     <script src="index.ts"></script>
   </body>
 </html>

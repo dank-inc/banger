@@ -1,7 +1,7 @@
 import { IBanger } from '..'
 import { Player, PlayerParams } from './Player'
 
-type Params = PlayerParams & {
+export type BangerParams = PlayerParams & {
   arrayBuffer: ArrayBuffer
   name: string
 }
@@ -11,7 +11,7 @@ export class Banger extends Player implements IBanger {
   name: string
   loading = true
 
-  constructor(params: Params) {
+  constructor(params: BangerParams) {
     super(params)
     this.name = params.name
 
@@ -23,7 +23,7 @@ export class Banger extends Player implements IBanger {
     })
   }
 
-  private loadSource = () => {
+  loadSource = () => {
     this.loading = true
     this.source = null
     this.source = this.ctx.createBufferSource()
@@ -35,13 +35,7 @@ export class Banger extends Player implements IBanger {
     this.loading = false
   }
 
-  play = async () => {
-    // console.log('state', this.source?.context.state)
-    if (this.loop) {
-      this.handleStop()
-      this.loadSource()
-    }
-
+  play = () => {
     this.handlePlay()
     this.loadSource()
   }
