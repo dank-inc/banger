@@ -10,6 +10,15 @@ export class Looper extends Banger {
     this.loop = true
   }
 
+  get state() {
+    return {
+      playing: this.playing,
+      length: this.source?.buffer?.duration,
+      currentTime: this.ctx.currentTime,
+      u: this.ctx.currentTime / (this.source?.buffer?.duration || 1),
+    }
+  }
+
   pause = () => {
     if (!this.playing) return
 

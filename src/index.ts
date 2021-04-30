@@ -69,6 +69,9 @@ const main = async () => {
     // if (key === 'e') banger.play()
     // if (key === 'q') multiBanger.play()
   })
+
+  const canvas = document.getElementById('viz') as HTMLCanvasElement
+  canvas.getContext('2d')
 }
 
 main()
