@@ -15,20 +15,18 @@ const main = async () => {
   const drumsEl = document.getElementById('drums')
   const rootEl = document.getElementById('root')
 
-  const kick = new Looper({
+  const kick = new Banger({
     name: 'Kick',
     arrayBuffer: await getWav(
       'https://cwilso.github.io/MIDIDrums/sounds/drum-samples/CR78/kick.wav',
     ),
   })
+
   makeButton(drumsEl, kick)
 
-  const ttib = new Banger({
+  const ttib = new Looper({
     name: 'Tezos Till I Bezos',
     arrayBuffer: await getWav(tezos),
-    drift: 0,
-    loop: true,
-    playbackRate: 0.75,
   })
 
   makeButton(rootEl, ttib)
