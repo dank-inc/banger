@@ -20,7 +20,6 @@ export class Player {
   loading?: boolean
   playing: boolean
   playbackRate: number
-  startTime: number
 
   constructor(params: PlayerParams) {
     this.reverse = params.reverse
@@ -30,7 +29,6 @@ export class Player {
     this.source = null
     this.playing = false
     this.playbackRate = params.playbackRate || 1
-    this.startTime = 0
 
     this.gainNode = this.ctx.createGain()
     this.gainNode.gain.value = params.volume || 1
@@ -44,7 +42,6 @@ export class Player {
   handlePause = () => {
     if (!this.playing) return
 
-    this.startTime = this.ctx.currentTime
     this.source?.stop()
   }
 
@@ -53,10 +50,10 @@ export class Player {
 
     this.source?.stop()
     this.playing = false
-    this.startTime = 0
   }
 
-  handlePlay = () => {
+  handlePlay = (at = 0) => {
+    console.log('playing', at)
     if (!this.source) {
       console.warn('Audio not loaded')
       return
@@ -67,10 +64,9 @@ export class Player {
       return
     }
 
-    // TODO: volume
     this.source.detune.value = Rando.normal(this.drift)
     this.source.playbackRate.value = this.playbackRate * (this.reverse ? -1 : 1)
-    this.source.start(this.startTime)
+    this.source.start(0, at)
     this.playing = true
   }
 }

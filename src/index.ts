@@ -50,17 +50,26 @@ const main = async () => {
   document.getElementById('pitch').onchange = ({ target }) => {
     const value = parseFloat((target as HTMLInputElement).value)
     ttib.playbackRate = value
+    ttib.pause()
+    ttib.play()
   }
 
   document.getElementById('pause').onclick = () => {
+    console.log('pause click')
     ttib.pause()
   }
 
   document.getElementById('play').onclick = () => {
-    ttib.pause()
+    console.log('play click')
+    ttib.play()
   }
-  document.getElementById('stop').onclick = () => {
+  document.getElementById('stop').addEventListener('click', () => {
+    console.log('stop click')
     ttib.stop()
+  })
+
+  document.getElementById('state').onclick = () => {
+    console.log('state click', ttib.state)
   }
 
   const volumeSlider = document.getElementById('volume')
@@ -69,9 +78,6 @@ const main = async () => {
     // if (key === 'e') banger.play()
     // if (key === 'q') multiBanger.play()
   })
-
-  const canvas = document.getElementById('viz') as HTMLCanvasElement
-  canvas.getContext('2d')
 }
 
 main()
