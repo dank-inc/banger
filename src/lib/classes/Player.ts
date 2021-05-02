@@ -2,6 +2,7 @@ import { Rando } from '@dank-inc/numbaz'
 
 export type PlayerParams = {
   volume?: number
+  pan?: number
   reverse?: boolean
   loop?: boolean
   drift?: number
@@ -14,6 +15,8 @@ export class Player {
   source: AudioBufferSourceNode | null
 
   gainNode: GainNode
+  panNode: StereoPannerNode
+
   reverse?: boolean
   loop?: boolean
   drift: number
@@ -32,6 +35,8 @@ export class Player {
 
     this.gainNode = this.ctx.createGain()
     this.gainNode.gain.value = params.volume || 1
+
+    this.panNode = new StereoPannerNode(this.ctx, { pan: params.pan || 0 })
   }
 
   handleReverse = () => {
@@ -43,6 +48,14 @@ export class Player {
     if (!this.playing) return
 
     this.source?.stop()
+  }
+
+  handleVolume = (value: number) => {
+    this.gainNode.gain.value = value
+  }
+
+  handlePan = (value: number) => {
+    this.panNode.pan.value = value
   }
 
   handleStop = () => {

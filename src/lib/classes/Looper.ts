@@ -21,6 +21,8 @@ export class Looper extends Banger {
     return {
       playing: this.playing,
       startedAt: this.startedAt,
+      gain: this.gainNode,
+      pan: this.panNode,
       pausedAt: this.pausedAt,
       length: this.source?.buffer?.duration,
       state: this.ctx.state,
@@ -30,6 +32,12 @@ export class Looper extends Banger {
       u: this.ctx.currentTime / (this.source?.buffer?.duration || 1),
     }
   }
+
+  setPan = (value: number) => {
+    console.log('pan', value)
+    this.handlePan(value)
+  }
+  setVolume = (value: number) => this.handleVolume(value)
 
   pause = () => {
     if (!this.playing) return

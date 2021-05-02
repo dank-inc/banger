@@ -25,6 +25,7 @@ const main = async () => {
   makeButton(drumsEl, kick)
 
   const ttib = new Looper({
+    volume: 0.1,
     name: 'Tezos Till I Bezos',
     arrayBuffer: await getWav(tezos),
   })
@@ -47,12 +48,29 @@ const main = async () => {
 
   makeButton(drumsEl, multiBanger)
 
-  document.getElementById('pitch').onchange = ({ target }) => {
-    const value = parseFloat((target as HTMLInputElement).value)
-    ttib.playbackRate = value
+  const pitchControl = document.querySelector('[data-action="pitch"]')
+
+  pitchControl.addEventListener('input', function () {
+    ttib.playbackRate = this.value
+    if (!ttib.playing) return
+
     ttib.pause()
     ttib.play()
-  }
+  })
+
+  const volumeControl = document.querySelector('[data-action="volume"]')
+  volumeControl.addEventListener('input', function () {
+    ttib.setVolume(this.value)
+  })
+
+  const panControl = document.querySelector('[data-action="pan"]')
+  panControl.addEventListener('input', function () {
+    ttib.setPan(this.value)
+  })
+
+  // ttib.playbackRate = value
+  // ttib.pause()
+  // ttib.play()
 
   document.getElementById('pause').onclick = () => {
     console.log('pause click')

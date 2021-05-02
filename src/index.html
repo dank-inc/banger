@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" href="style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Banger</title>
   </head>
@@ -21,7 +22,29 @@
       <div id="sliders">
         <div>
           <label for="volume">Volume</label>
-          <input type="range" name="volume" id="volume" />
+          <input
+            type="range"
+            name="volume"
+            id="volume"
+            min="0"
+            max="2"
+            value="1"
+            step="0.01"
+            data-action="volume"
+          />
+        </div>
+        <div>
+          <label for="pan">Pan</label>
+          <input
+            type="range"
+            name="pan"
+            id="pan"
+            value="0"
+            min="-1"
+            step="0.05"
+            max="1"
+            data-action="pan"
+          />
         </div>
         <div>
           <label for="pitch">Pitch</label>
@@ -32,6 +55,7 @@
             min="0"
             step="0.05"
             max="2"
+            data-action="pitch"
           />
         </div>
       </div>

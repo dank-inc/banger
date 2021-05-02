@@ -27,10 +27,12 @@ export class Banger extends Player implements IBanger {
     this.loading = true
     this.source = null
     this.source = this.ctx.createBufferSource()
-
     this.source.loop = true
     this.source.buffer = this.audioBuffer
-    this.source.connect(this.ctx.destination)
+    this.source
+      .connect(this.gainNode)
+      .connect(this.panNode)
+      .connect(this.ctx.destination)
     this.source.loop = !!this.loop
     this.loading = false
   }
