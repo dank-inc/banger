@@ -36,7 +36,7 @@ export class MultiBanger extends Player implements IBanger {
     this.source = this.ctx.createBufferSource()
     // this.source.addEventListener('ended', this.loadSource)
     this.source.buffer = Rando.item(this.audioBuffers)
-    this.source.connect(this.ctx.destination)
+    this.source.connect(this.gainNode).connect(this.ctx.destination)
     this.loading = false
   }
 
