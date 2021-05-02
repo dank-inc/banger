@@ -12,6 +12,8 @@ const makeButton = (el: HTMLElement, player: IBanger) => {
 }
 
 const main = async () => {
+  console.log('ADD A TRANSPOSE!')
+
   const drumsEl = document.getElementById('drums')
   const rootEl = document.getElementById('root')
 

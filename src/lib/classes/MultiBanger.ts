@@ -20,6 +20,8 @@ export class MultiBanger extends Player implements IBanger {
     this.init(params.arrayBuffers)
   }
 
+  setVolume = (value: number) => this.handleVolume(value)
+
   init = async (arrayBuffers: ArrayBuffer[]) => {
     this.audioBuffers = await Promise.all(
       arrayBuffers.map(async (buff) => await this.ctx.decodeAudioData(buff)),

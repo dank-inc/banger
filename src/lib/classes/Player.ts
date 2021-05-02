@@ -66,7 +66,6 @@ export class Player {
   }
 
   handlePlay = (at = 0) => {
-    console.log('playing', at)
     if (!this.source) {
       console.warn('Audio not loaded')
       return

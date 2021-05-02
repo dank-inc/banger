@@ -56,7 +56,7 @@ export class Looper extends Banger {
   }
 
   play = () => {
-    console.log('gonna playzos', this.pausedAt)
+    // console.log('gonna playzos', this.pausedAt)
     if (!this.playing || this.paused) {
       this.handlePlay(this.pausedAt)
       this.paused = false
