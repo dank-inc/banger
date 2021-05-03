@@ -56,11 +56,10 @@ export class Looper extends Banger {
   }
 
   play = () => {
-    // console.log('gonna playzos', this.pausedAt)
     if (!this.playing || this.paused) {
       this.handlePlay(this.pausedAt)
       this.paused = false
-      this.startedAt = this.ctx.currentTime
+      this.startedAt = this.ctx.currentTime - this.pausedAt
       return
     }
 

@@ -21,6 +21,7 @@ export class MultiBanger extends Player implements IBanger {
   }
 
   setVolume = (value: number) => this.handleVolume(value)
+  setPan = (value: number) => this.handlePan(value)
 
   init = async (arrayBuffers: ArrayBuffer[]) => {
     this.audioBuffers = await Promise.all(
@@ -36,7 +37,10 @@ export class MultiBanger extends Player implements IBanger {
     this.source = this.ctx.createBufferSource()
     // this.source.addEventListener('ended', this.loadSource)
     this.source.buffer = Rando.item(this.audioBuffers)
-    this.source.connect(this.gainNode).connect(this.ctx.destination)
+    this.source
+      .connect(this.gainNode)
+      .connect(this.panNode)
+      .connect(this.ctx.destination)
     this.loading = false
   }
 
