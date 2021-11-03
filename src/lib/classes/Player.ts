@@ -8,6 +8,7 @@ export type PlayerParams = {
   drift?: number
   playbackRate?: number
   startTime?: number
+  onLoaded?: () => void
 }
 
 export class Player {
@@ -23,6 +24,7 @@ export class Player {
   loading?: boolean
   playing: boolean
   playbackRate: number
+  onLoaded?: () => void
 
   constructor(params: PlayerParams) {
     this.reverse = params.reverse
@@ -32,6 +34,7 @@ export class Player {
     this.source = null
     this.playing = false
     this.playbackRate = params.playbackRate || 1
+    this.onLoaded = params.onLoaded
 
     this.gainNode = this.ctx.createGain()
     this.gainNode.gain.value = params.volume || 1
