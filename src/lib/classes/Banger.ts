@@ -38,8 +38,12 @@ export class Banger extends Player implements IBanger {
     this.loading = false
   }
 
+  stop = () => {
+    this.handleStop()
+    this.loadSource()
+  }
+
   play = () => {
     this.handlePlay()
-    this.loadSource()
   }
 }
