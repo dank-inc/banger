@@ -19,7 +19,8 @@ export class Banger extends Player implements IBanger {
       this.audioBuffer = audioBuffer
 
       this.loadSource()
-      console.log('loaded!')
+      params.onLoaded?.()
+      console.log(params.name, 'loaded!')
     })
   }
 
