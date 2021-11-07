@@ -6,11 +6,17 @@ export type BangerParams = PlayerParams & {
   name: string
 }
 
+
+
 export class Banger extends Player implements IBanger {
   audioBuffer!: AudioBuffer
   name: string
   loading = true
 
+  /**
+   * Used for single-shot sounds (shorter sounds)
+   * For songs, recommend the 'Looper'
+   */
   constructor(params: BangerParams) {
     super(params)
     this.name = params.name

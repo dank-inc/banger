@@ -1,7 +1,7 @@
 import { Banger, BangerParams } from './Banger'
 
 type LooperParams = BangerParams & {
-  loop?: true
+  loop?: boolean
 }
 
 export class Looper extends Banger {
@@ -9,6 +9,10 @@ export class Looper extends Banger {
   startedAt: number
   pausedAt: number
 
+  /**
+   * Used for longer sounds and songs
+   * For short sounds, use Banger
+   */
   constructor(params: LooperParams) {
     super(params)
     this.loop = true

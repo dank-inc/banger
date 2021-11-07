@@ -12,6 +12,11 @@ export class MultiBanger extends Player implements IBanger {
   audioBuffers: AudioBuffer[]
   loading = true
 
+  /**
+   * Used for playing libraries of similar sounds
+   * For single sounds, use Banger
+   * For long sounds / music, use Looper
+   */
   constructor(params: Params) {
     super(params)
     this.name = params.name

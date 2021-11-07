@@ -26,6 +26,10 @@ export class Player {
   playbackRate: number
   onLoaded?: () => void
 
+  /**
+   * To be used as a subclasss for wrapper classes
+   * the `handleX` are to be used by the parent classes as per the requirements
+   */
   constructor(params: PlayerParams) {
     this.reverse = params.reverse
     this.loop = params.loop
