@@ -24,7 +24,6 @@ export class Banger extends Player implements IBanger {
     this.ctx.decodeAudioData(params.arrayBuffer).then((audioBuffer) => {
       this.audioBuffer = audioBuffer
 
-      this.loadSource()
       params.onLoaded?.()
       console.log(params.name, 'loaded!')
     })
@@ -51,5 +50,6 @@ export class Banger extends Player implements IBanger {
 
   play = () => {
     this.handlePlay()
+    this.loadSource()
   }
 }
