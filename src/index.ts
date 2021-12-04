@@ -2,7 +2,8 @@ import { Banger, MultiBanger, Looper, getWav, getWavs, IBanger } from './lib'
 
 // @ts-ignore
 import tezos from './audio/eli7vh-tezos-till-i-bezos-final.wav'
-console.log(tezos)
+// @ts-ignore
+import drag from './audio/drawing.wav'
 
 const makeButton = (el: HTMLElement, player: IBanger) => {
   const playerButton = document.createElement('button')
@@ -22,17 +23,42 @@ const main = async () => {
     arrayBuffer: await getWav(
       'https://cwilso.github.io/MIDIDrums/sounds/drum-samples/CR78/kick.wav',
     ),
+    onLoaded: () => console.log('>> kick loaded'),
+    onEnded: () => console.log('>> kick sound ended'),
+    onFail: console.error,
   })
 
   makeButton(drumsEl, kick)
 
   const ttib = new Looper({
-    volume: 0.1,
+    volume: 1,
     name: 'Tezos Till I Bezos',
+    loop: true,
     arrayBuffer: await getWav(tezos),
+    onLoaded: () => console.log('>> ttib loaded'),
+    onEnded: () => console.log('>> ttib sound ended'),
+    onFail: console.error,
   })
 
   makeButton(rootEl, ttib)
+  const draw = new Looper({
+    volume: 1,
+    name: 'Drawing Sound',
+    arrayBuffer: await getWav(drag),
+    onLoaded: () => console.log('>> drwa loaded'),
+    onEnded: () => console.log('>> drwa sound ended'),
+    onFail: console.error,
+  })
+
+  window.addEventListener('click', () => {
+    if (draw.playing) {
+      console.log('draw sound start')
+      draw.play()
+    } else {
+      console.log('draw sound stop')
+      draw.stop()
+    }
+  })
 
   const files = [
     'https://cwilso.github.io/MIDIDrums/sounds/drum-samples/CR78/kick.wav',
@@ -46,6 +72,9 @@ const main = async () => {
   const multiBanger = new MultiBanger({
     name: 'drumz',
     arrayBuffers: await getWavs(files),
+    onLoaded: () => console.log('drum loaded'),
+    onEnded: () => console.log('drum sound ended'),
+    onFail: console.error,
   })
 
   makeButton(drumsEl, multiBanger)

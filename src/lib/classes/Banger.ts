@@ -6,8 +6,6 @@ export type BangerParams = PlayerParams & {
   name: string
 }
 
-
-
 export class Banger extends Player implements IBanger {
   audioBuffer!: AudioBuffer
   name: string
@@ -20,12 +18,11 @@ export class Banger extends Player implements IBanger {
   constructor(params: BangerParams) {
     super(params)
     this.name = params.name
+    this.onEnded = params.onEnded
 
     this.ctx.decodeAudioData(params.arrayBuffer).then((audioBuffer) => {
       this.audioBuffer = audioBuffer
-
       params.onLoaded?.()
-      console.log(params.name, 'loaded!')
     })
   }
 
@@ -35,6 +32,10 @@ export class Banger extends Player implements IBanger {
     this.source = this.ctx.createBufferSource()
     this.source.loop = true
     this.source.buffer = this.audioBuffer
+    this.source.addEventListener('ended', () => {
+      // console.log('multibanger> ended event fired')
+      this.onEnded?.()
+    })
     this.source
       .connect(this.gainNode)
       .connect(this.panNode)

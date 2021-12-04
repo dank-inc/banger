@@ -38,7 +38,7 @@ export class Looper extends Banger {
   }
 
   setPan = (value: number) => {
-    console.log('pan', value)
+    // console.log('looper> pan', value)
     this.handlePan(value)
   }
   setVolume = (value: number) => this.handleVolume(value)

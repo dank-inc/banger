@@ -8,7 +8,9 @@ export type PlayerParams = {
   drift?: number
   playbackRate?: number
   startTime?: number
-  onLoaded?: () => void
+  onLoaded?: (msg?: string) => void
+  onEnded?: () => void
+  onFail: (msg: string) => void
 }
 
 export class Player {
@@ -24,7 +26,9 @@ export class Player {
   loading?: boolean
   playing: boolean
   playbackRate: number
-  onLoaded?: () => void
+  onLoaded?: (msg?: string) => void
+  onEnded?: () => void
+  onFail: (msg: string, data?: { source?: AudioBufferSourceNode }) => void
 
   /**
    * To be used as a subclasss for wrapper classes
@@ -39,6 +43,7 @@ export class Player {
     this.playing = false
     this.playbackRate = params.playbackRate || 1
     this.onLoaded = params.onLoaded
+    this.onFail = params.onFail
 
     this.gainNode = this.ctx.createGain()
     this.gainNode.gain.value = params.volume || 1
@@ -74,12 +79,14 @@ export class Player {
 
   handlePlay = (at = 0) => {
     if (!this.source) {
-      console.warn('Audio not loaded')
+      this.onFail('Audio not loaded')
+      // console.warn()
       return
     }
 
     if (this.loading) {
-      console.warn('Source is loading!', this.source)
+      this.onFail('Source is loading!', { source: this.source })
+      // console.warn('Source is loading!', this.source)
       return
     }
 

@@ -34,7 +34,8 @@ export class MultiBanger extends Player implements IBanger {
     )
 
     this.loadSource()
-    console.log(`Soundbank: ${this.name} loaded!`)
+    this.onLoaded?.(`Soundbank: ${this.name} loaded!`)
+    console.log()
   }
 
   private loadSource = () => {
@@ -42,6 +43,10 @@ export class MultiBanger extends Player implements IBanger {
     this.source = this.ctx.createBufferSource()
     // this.source.addEventListener('ended', this.loadSource)
     this.source.buffer = Rando.item(this.audioBuffers)
+    this.source.addEventListener('ended', () => {
+      // console.log('multibanger> ended event fired')
+      this.onEnded?.()
+    })
     this.source
       .connect(this.gainNode)
       .connect(this.panNode)
