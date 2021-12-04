@@ -13,9 +13,11 @@ export class MultiBanger extends Player implements IBanger {
   loading = true
 
   /**
-   * Used for playing libraries of similar sounds
+   * Used for playing libraries of similar SHORT sounds
    * For single sounds, use Banger
    * For long sounds / music, use Looper
+   * NOTE: Has no stop control1!
+   *
    */
   constructor(params: Params) {
     super(params)
@@ -53,6 +55,8 @@ export class MultiBanger extends Player implements IBanger {
       .connect(this.ctx.destination)
     this.loading = false
   }
+
+  handleStop = () => console.info('MultiBanger has no stop control!')
 
   play = () => {
     this.handlePlay()

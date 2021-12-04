@@ -10,7 +10,7 @@ export type PlayerParams = {
   startTime?: number
   onLoaded?: (msg?: string) => void
   onEnded?: () => void
-  onFail: (msg: string) => void
+  onFail: (msg: string, shit: any) => void
 }
 
 export class Player {
@@ -28,7 +28,10 @@ export class Player {
   playbackRate: number
   onLoaded?: (msg?: string) => void
   onEnded?: () => void
-  onFail: (msg: string, data?: { source?: AudioBufferSourceNode }) => void
+  onFail: (
+    msg: string,
+    data?: { source?: AudioBufferSourceNode; this?: Player },
+  ) => void
 
   /**
    * To be used as a subclasss for wrapper classes
@@ -79,7 +82,7 @@ export class Player {
 
   handlePlay = (at = 0) => {
     if (!this.source) {
-      this.onFail('Audio not loaded')
+      this.onFail('Audio not loaded', { this: this })
       // console.warn()
       return
     }

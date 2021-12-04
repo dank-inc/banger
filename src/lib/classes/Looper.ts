@@ -10,6 +10,8 @@ export class Looper extends Banger {
   pausedAt: number
 
   /**
+   * Wrapper fro Banger
+   *
    * Used for longer sounds and songs
    * For short sounds, use Banger
    */
@@ -42,6 +44,26 @@ export class Looper extends Banger {
     this.handlePan(value)
   }
   setVolume = (value: number) => this.handleVolume(value)
+
+  loadSource = () => {
+    this.loading = true
+    this.source = null
+    this.source = this.ctx.createBufferSource()
+    this.source.buffer = this.audioBuffer
+
+    this.source.addEventListener('ended', () => {
+      this.onEnded?.()
+      this.playing = false
+      this.loadSource()
+    })
+
+    this.source
+      .connect(this.gainNode)
+      .connect(this.panNode)
+      .connect(this.ctx.destination)
+    this.source.loop = !!this.loop
+    this.loading = false
+  }
 
   pause = () => {
     if (!this.playing) return

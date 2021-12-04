@@ -12,8 +12,11 @@ export class Banger extends Player implements IBanger {
   loading = true
 
   /**
-   * Used for single-shot sounds (shorter sounds)
+   * Used for single-shot monophonic sounds (shorter sounds)
+   * cannot play mmore than one sound at a time
    * For songs, recommend the 'Looper'
+   *
+   * Looper and MultiBanger inherit from here.
    */
   constructor(params: BangerParams) {
     super(params)
@@ -23,6 +26,7 @@ export class Banger extends Player implements IBanger {
     this.ctx.decodeAudioData(params.arrayBuffer).then((audioBuffer) => {
       this.audioBuffer = audioBuffer
       params.onLoaded?.()
+      this.loadSource()
     })
   }
 
@@ -30,12 +34,14 @@ export class Banger extends Player implements IBanger {
     this.loading = true
     this.source = null
     this.source = this.ctx.createBufferSource()
-    this.source.loop = true
     this.source.buffer = this.audioBuffer
+
     this.source.addEventListener('ended', () => {
-      // console.log('multibanger> ended event fired')
       this.onEnded?.()
+      this.playing = false
+      this.loadSource()
     })
+
     this.source
       .connect(this.gainNode)
       .connect(this.panNode)
@@ -50,7 +56,8 @@ export class Banger extends Player implements IBanger {
   }
 
   play = () => {
+    if (this.playing) return
+
     this.handlePlay()
-    this.loadSource()
   }
 }
