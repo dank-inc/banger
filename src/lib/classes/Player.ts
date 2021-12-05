@@ -9,7 +9,8 @@ export type PlayerParams = {
   playbackRate?: number
   startTime?: number
   onLoaded?: (msg?: string) => void
-  onEnded?: () => void
+  onPlay?: () => void
+  onEnded?: (source?: 'source.onended') => void
   onFail: (msg: string, shit: any) => void
 }
 
@@ -27,7 +28,8 @@ export class Player {
   playing: boolean
   playbackRate: number
   onLoaded?: (msg?: string) => void
-  onEnded?: () => void
+  onEnded?: (source?: 'source.onended') => void
+  onPlay?: () => void
   onFail: (
     msg: string,
     data?: { source?: AudioBufferSourceNode; this?: Player },
@@ -97,5 +99,6 @@ export class Player {
     this.source.playbackRate.value = this.playbackRate * (this.reverse ? -1 : 1)
     this.source.start(0, at)
     this.playing = true
+    this.onPlay?.()
   }
 }
