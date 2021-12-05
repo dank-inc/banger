@@ -39,8 +39,8 @@ export class Banger extends Player implements IBanger {
     this.source.buffer = this.audioBuffer
 
     this.source.addEventListener('ended', () => {
-      this.onEnded?.('source.onended')
       this.playing = false
+      this.onEnded?.('source.onended')
       if (!this.single) this.loadSource()
     })
 
@@ -54,12 +54,13 @@ export class Banger extends Player implements IBanger {
 
   stop = () => {
     this.handleStop()
-    this.loadSource()
+    if (!this.single) this.loadSource()
   }
 
   play = () => {
     if (this.playing) return
 
     this.handlePlay()
+    this.onPlay?.()
   }
 }

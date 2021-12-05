@@ -47,8 +47,11 @@ export class Player {
     this.source = null
     this.playing = false
     this.playbackRate = params.playbackRate || 1
+
     this.onLoaded = params.onLoaded
     this.onFail = params.onFail
+    this.onPlay = params.onPlay
+    this.onEnded = params.onEnded
 
     this.gainNode = this.ctx.createGain()
     this.gainNode.gain.value = params.volume || 1
@@ -99,6 +102,5 @@ export class Player {
     this.source.playbackRate.value = this.playbackRate * (this.reverse ? -1 : 1)
     this.source.start(0, at)
     this.playing = true
-    this.onPlay?.()
   }
 }
