@@ -21,11 +21,9 @@ export class Banger extends Player implements IBanger {
   constructor(params: BangerParams) {
     super(params)
     this.name = params.name
-    this.onEnded = params.onEnded
 
     this.ctx.decodeAudioData(params.arrayBuffer).then((audioBuffer) => {
       this.audioBuffer = audioBuffer
-      params.onLoaded?.()
       this.loadSource()
     })
   }
@@ -48,6 +46,7 @@ export class Banger extends Player implements IBanger {
       .connect(this.ctx.destination)
     this.source.loop = !!this.loop
     this.loading = false
+    this.onLoaded?.()
   }
 
   stop = () => {

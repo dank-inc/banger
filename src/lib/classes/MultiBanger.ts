@@ -36,8 +36,6 @@ export class MultiBanger extends Player implements IBanger {
     )
 
     this.loadSource()
-    this.onLoaded?.(`Soundbank: ${this.name} loaded!`)
-    console.log()
   }
 
   private loadSource = () => {
@@ -54,6 +52,7 @@ export class MultiBanger extends Player implements IBanger {
       .connect(this.panNode)
       .connect(this.ctx.destination)
     this.loading = false
+    this.onLoaded?.(`Soundbank: ${this.name} loaded!`)
   }
 
   handleStop = () => console.info('MultiBanger has no stop control!')
