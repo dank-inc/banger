@@ -10,7 +10,7 @@ export type PlayerParams = {
   startTime?: number
   onLoaded?: (msg?: string) => void
   onPlay?: () => void
-  onEnded?: (source?: 'source.onended') => void
+  onEnded?: (msg?: string, manualStop?: boolean) => void
   onFail: (msg: string, shit: any) => void
 }
 
@@ -28,7 +28,7 @@ export class Player {
   playing: boolean
   playbackRate: number
   onLoaded?: (msg?: string) => void
-  onEnded?: (source?: 'source.onended') => void
+  onEnded?: (msg?: string, manualStop?: boolean) => void
   onPlay?: () => void
   onFail: (
     msg: string,

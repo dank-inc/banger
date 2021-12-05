@@ -12,6 +12,7 @@ export class Banger extends Player implements IBanger {
   name: string
   single?: boolean
   loading = true
+  manualStop?: boolean
 
   /**
    * Used for single-shot monophonic sounds (shorter sounds)
@@ -40,7 +41,7 @@ export class Banger extends Player implements IBanger {
 
     this.source.addEventListener('ended', () => {
       this.playing = false
-      this.onEnded?.('source.onended')
+      this.onEnded?.(`onEnded -> ${this.name}`, this.manualStop!!)
       if (!this.single) this.loadSource()
     })
 
@@ -53,6 +54,7 @@ export class Banger extends Player implements IBanger {
   }
 
   stop = () => {
+    this.manualStop = true
     this.handleStop()
     if (!this.single) this.loadSource()
   }
@@ -60,6 +62,7 @@ export class Banger extends Player implements IBanger {
   play = () => {
     if (this.playing) return
 
+    this.manualStop = undefined
     this.handlePlay()
     this.onPlay?.()
   }

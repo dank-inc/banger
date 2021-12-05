@@ -52,8 +52,8 @@ export class Looper extends Banger {
     this.source.buffer = this.audioBuffer
 
     this.source.addEventListener('ended', () => {
-      this.onEnded?.()
       this.playing = false
+      this.onEnded?.()
       this.loadSource()
     })
 
