@@ -25,7 +25,7 @@
     "start": "parcel src/index.html --public-url /public",
     "lint": "tsc --noEmit",
     "compile": "rm -rf lib && tsc",
-    "compile:one": "tsc --outFile banger.js --module amd src/index.ts",
+    "compile:one": "parcel build --no-source-maps src/lib/index.ts",
     "deploy": "npm run compile && npm publish",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
