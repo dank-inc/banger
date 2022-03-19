@@ -1,4 +1,3 @@
-import { Rando } from '@dank-inc/numbaz'
 import { IBanger } from '..'
 import { Player, PlayerParams } from './Player'
 
@@ -43,7 +42,10 @@ export class MultiBanger extends Player implements IBanger {
     this.source = null
     this.source = this.ctx.createBufferSource()
     // this.source.addEventListener('ended', this.loadSource)
-    this.source.buffer = Rando.item(this.audioBuffers)
+    this.source.buffer =
+      this.audioBuffers[
+        Math.floor(Math.random() * this.audioBuffers.length - 1)
+      ]
     this.source.addEventListener('ended', () => {
       // console.log('multibanger> ended event fired')
       this.onEnded?.()

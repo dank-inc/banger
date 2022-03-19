@@ -1,5 +1,3 @@
-import { Rando } from '@dank-inc/numbaz'
-
 export type PlayerParams = {
   volume?: number
   pan?: number
@@ -98,7 +96,7 @@ export class Player {
       return
     }
 
-    this.source.detune.value = Rando.normal(this.drift)
+    this.source.detune.value = 2 * (Math.random() - 0.5) * this.drift
     this.source.playbackRate.value = this.playbackRate * (this.reverse ? -1 : 1)
     this.source.start(0, at)
     this.playing = true
