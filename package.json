@@ -31,8 +31,8 @@
   },
   "devDependencies": {
     "@parcel/transformer-typescript-tsc": "^2.0.1",
-    "parcel": "^2.0.1",
-    "typescript": "^4.2.3",
+    "parcel": "^2.7.0",
+    "typescript": "^4.7.4",
     "@parcel/config-default": "*"
   },
   "dependencies": {
