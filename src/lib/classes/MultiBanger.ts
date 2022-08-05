@@ -1,4 +1,3 @@
-import { Rando } from '@dank-inc/numbaz'
 import { IBanger } from '..'
 import { Player, PlayerParams } from './Player'
 
@@ -36,13 +35,17 @@ export class MultiBanger extends Player implements IBanger {
     )
 
     this.loadSource()
+    this.onLoaded?.(`Soundbank: ${this.name} loaded!`)
   }
 
   private loadSource = () => {
     this.source = null
     this.source = this.ctx.createBufferSource()
     // this.source.addEventListener('ended', this.loadSource)
-    this.source.buffer = Rando.item(this.audioBuffers)
+    this.source.buffer =
+      this.audioBuffers[
+        Math.floor(Math.random() * this.audioBuffers.length - 1)
+      ]
     this.source.addEventListener('ended', () => {
       // console.log('multibanger> ended event fired')
       this.onEnded?.()
@@ -52,7 +55,6 @@ export class MultiBanger extends Player implements IBanger {
       .connect(this.panNode)
       .connect(this.ctx.destination)
     this.loading = false
-    this.onLoaded?.(`Soundbank: ${this.name} loaded!`)
   }
 
   handleStop = () => console.info('MultiBanger has no stop control!')
