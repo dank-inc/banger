@@ -22,6 +22,7 @@
     "sound player"
   ],
   "scripts": {
+    "dev": "esbuild ./src/index.ts --serve=1234 --outdir=./public --servedir=./public --bundle",
     "start": "parcel src/index.html --public-url /public",
     "lint": "tsc --noEmit",
     "compile": "rm -rf lib && tsc",
@@ -30,10 +31,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "@parcel/transformer-typescript-tsc": "^2.0.1",
-    "parcel": "^2.7.0",
     "typescript": "^4.7.4",
-    "@parcel/config-default": "*"
+    "esbuild": "^0.14.53"
   },
   "dependencies": {
     "@dank-inc/numbaz": "^0.3.0"

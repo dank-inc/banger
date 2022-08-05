@@ -1,9 +1,9 @@
 import { Banger, MultiBanger, Looper, getWav, getWavs, IBanger } from './lib'
 
 // @ts-ignore
-import tezos from './audio/eli7vh-tezos-till-i-bezos-final.wav'
+// import tezos from './audio/eli7vh-tezos-till-i-bezos-final.wav'
 // @ts-ignore
-import drag from './audio/drawing.wav'
+// import drag from './audio/drawing.wav'
 
 const makeButton = (
   el: HTMLElement,
@@ -28,8 +28,21 @@ const getTarget = (e: MouseEvent) => e.target as HTMLElement
 const qsi = (selector: string) =>
   document.querySelector(selector) as HTMLInputElement
 
+const getAudio = (id: string) => {
+  const audioContainer = getEl(id)
+  const audio = audioContainer.querySelectorAll('audio')
+  const map: Record<string, HTMLAudioElement> = {}
+
+  Array.from(audio).forEach((el) => {
+    map[el.id] = el as HTMLAudioElement
+  })
+  return map
+}
+
 const main = async () => {
   console.log('ADD A TRANSPOSE!')
+
+  const map = getAudio('audio')
 
   const drumsEl = getEl('drums')!
   const rootEl = getEl('root')!
@@ -37,7 +50,7 @@ const main = async () => {
   const ttib = new Looper({
     name: 'Looper: Tezos Till I Bezos',
     loop: true,
-    arrayBuffer: await getWav(tezos),
+    arrayBuffer: await getWav(map['tezos'].src),
     onLoaded: () => console.log('>> ttib loaded'),
     onEnded: () => console.log('>> ttib sound ended'),
     onFail: console.error,
@@ -46,7 +59,7 @@ const main = async () => {
 
   const draw = new Looper({
     name: 'Drawing Sound',
-    arrayBuffer: await getWav(drag),
+    arrayBuffer: await getWav(map['drawing'].src),
     onLoaded: () => console.log('>> drwa loaded'),
     onEnded: () => console.log('>> drwa sound ended'),
     onFail: console.error,
