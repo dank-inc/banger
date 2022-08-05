@@ -26,6 +26,14 @@ h1 {
   margin: 0;
 }
 
+h3 {
+  font-family: monospace;
+  margin: 0;
+  margin-top: 2rem;
+}
+
+
+
 input, button {
   width: 100%;
 }

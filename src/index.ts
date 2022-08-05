@@ -9,6 +9,7 @@ const makeButton = (
   el: HTMLElement,
   player: IBanger,
   handler?: (e: MouseEvent) => void,
+  name?: string,
 ) => {
   const playerButton = document.createElement('button')
 
@@ -18,7 +19,7 @@ const makeButton = (
   }
 
   playerButton.addEventListener('click', handler || eventHandler)
-  playerButton.innerHTML = player.name
+  playerButton.innerHTML = name || player.name
   el.appendChild(playerButton)
 }
 
@@ -52,7 +53,7 @@ const main = async () => {
     loop: true,
   })
 
-  makeButton(drumsEl, draw, () => {
+  makeButton(getEl('loopingsfx'), draw, () => {
     if (!draw.playing) draw.play()
     else draw.stop()
   })
