@@ -5,21 +5,57 @@ import tezos from './audio/eli7vh-tezos-till-i-bezos-final.wav'
 // @ts-ignore
 import drag from './audio/drawing.wav'
 
-const makeButton = (el: HTMLElement, player: IBanger) => {
+const makeButton = (
+  el: HTMLElement,
+  player: IBanger,
+  handler?: (e: MouseEvent) => void,
+) => {
   const playerButton = document.createElement('button')
-  playerButton.addEventListener('click', (e) => {
+
+  const eventHandler = (e: MouseEvent) => {
     e.stopPropagation()
     player.play()
-  })
+  }
+
+  playerButton.addEventListener('click', handler || eventHandler)
   playerButton.innerHTML = player.name
   el.appendChild(playerButton)
 }
 
+const getEl = (id: string) => document.getElementById(id) as HTMLElement
+const getTarget = (e: MouseEvent) => e.target as HTMLElement
+const qsi = (selector: string) =>
+  document.querySelector(selector) as HTMLInputElement
+
 const main = async () => {
   console.log('ADD A TRANSPOSE!')
 
-  const drumsEl = document.getElementById('drums')
-  const rootEl = document.getElementById('root')
+  const drumsEl = getEl('drums')!
+  const rootEl = getEl('root')!
+
+  const ttib = new Looper({
+    name: 'Looper: Tezos Till I Bezos',
+    loop: true,
+    arrayBuffer: await getWav(tezos),
+    onLoaded: () => console.log('>> ttib loaded'),
+    onEnded: () => console.log('>> ttib sound ended'),
+    onFail: console.error,
+  })
+  makeButton(rootEl, ttib)
+
+  const draw = new Looper({
+    name: 'Drawing Sound',
+    arrayBuffer: await getWav(drag),
+    onLoaded: () => console.log('>> drwa loaded'),
+    onEnded: () => console.log('>> drwa sound ended'),
+    onFail: console.error,
+    loop: true,
+  })
+
+  makeButton(drumsEl, draw, () => {
+    if (!draw.playing) draw.play()
+    else draw.stop()
+  })
 
   const kick = new Banger({
     name: 'Banger: Kick',
@@ -30,38 +66,7 @@ const main = async () => {
     onEnded: () => console.log('>> kick sound ended'),
     onFail: (msg, player) => console.error(msg, player),
   })
-
   makeButton(drumsEl, kick)
-
-  const ttib = new Looper({
-    name: 'Looper: Tezos Till I Bezos',
-    loop: true,
-    arrayBuffer: await getWav(tezos),
-    onLoaded: () => console.log('>> ttib loaded'),
-    onEnded: () => console.log('>> ttib sound ended'),
-    onFail: console.error,
-  })
-
-  makeButton(rootEl, ttib)
-  const draw = new Looper({
-    name: 'Drawing Sound',
-    arrayBuffer: await getWav(drag),
-    onLoaded: () => console.log('>> drwa loaded'),
-    onEnded: () => console.log('>> drwa sound ended'),
-    onFail: console.error,
-    loop: true,
-  })
-
-  window.addEventListener('click', () => {
-    console.log(draw.playing)
-    if (!draw.playing) {
-      console.log('draw sound start')
-      draw.play()
-    } else {
-      console.log('draw sound stop')
-      draw.stop()
-    }
-  })
 
   const files = [
     'https://cwilso.github.io/MIDIDrums/sounds/drum-samples/CR78/kick.wav',
@@ -83,54 +88,41 @@ const main = async () => {
 
   makeButton(drumsEl, multiBanger)
 
-  const pitchControl = document.querySelector('[data-action="pitch"]')
+  qsi('[data-action="pitch"]').addEventListener('input', function () {
+    ttib.playbackRate = Number(this.value)
 
-  pitchControl.addEventListener('input', function () {
-    ttib.playbackRate = this.value
     if (!ttib.playing) return
 
     ttib.pause()
     ttib.play()
   })
 
-  const volumeControl = document.querySelector('[data-action="volume"]')
-  volumeControl.addEventListener('input', function () {
-    ttib.setVolume(this.value)
+  qsi('[data-action="volume"]').addEventListener('input', function () {
+    ttib.setVolume(Number(this.value))
   })
 
-  const panControl = document.querySelector('[data-action="pan"]')
-  panControl.addEventListener('input', function () {
-    ttib.setPan(this.value)
+  qsi('[data-action="pan"]')!.addEventListener('input', function () {
+    ttib.setPan(Number(this.value))
   })
 
   // ttib.playbackRate = value
   // ttib.pause()
   // ttib.play()
 
-  document.getElementById('pause').onclick = () => {
-    console.log('pause click')
-    ttib.pause()
+  const clickHander = (e: MouseEvent) => {
+    const id = getTarget(e).id
+    console.log(id, 'click')
+    ttib[id]?.()
   }
 
-  document.getElementById('play').onclick = () => {
-    console.log('play click')
-    ttib.play()
-  }
-  document.getElementById('stop').addEventListener('click', () => {
-    console.log('stop click')
-    ttib.stop()
+  Array.from(getEl('buttons').children).forEach((action) => {
+    getEl(action.id).addEventListener('click', clickHander)
   })
 
-  document.getElementById('state').onclick = () => {
-    console.log('state click', ttib.state)
-  }
-
-  const volumeSlider = document.getElementById('volume')
-
-  addEventListener('keydown', ({ key }) => {
-    // if (key === 'e') banger.play()
-    // if (key === 'q') multiBanger.play()
-  })
+  // getEl('volume').addEventListener('keydown', ({ key }) => {
+  // if (key === 'e') banger.play()
+  // if (key === 'q') multiBanger.play()
+  // })
 }
 
 main()

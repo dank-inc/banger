@@ -1,3 +1,55 @@
-input {
+* {
+  box-sizing: border-box;
+}
+
+html {
+  padding: 0;
+  margin: 0;
+  
+}
+
+body {
+  background: #111;
+  color: #aaa;
+  display: grid;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  grid-template-rows: 100px auto;
+}
+
+h1 {
+  background: #222;
+  text-align: center;
+  padding: 2rem;
+  font-family: monospace;
+  margin: 0;
+}
+
+input, button {
   width: 100%;
+}
+
+button {
+  border: 0;
+  padding: 0.5rem;
+  font-family: monospace;
+}
+
+#controls {
+  padding: 2rem;
+  margin: auto;
+  width: 100%;
+  max-width: 900px;
+  display: grid;
+  gap: 1rem;
+  align-items: center;
+}
+
+#buttons, #drums {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  justify-content: space-between;
+  align-items: center;
 }

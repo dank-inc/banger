@@ -2,13 +2,13 @@ import { IBanger } from '..'
 import { Player, PlayerParams } from './Player'
 
 export type BangerParams = PlayerParams & {
-  arrayBuffer: ArrayBuffer
+  arrayBuffer: ArrayBuffer | null
   name: string
   single?: boolean
 }
 
 export class Banger extends Player implements IBanger {
-  audioBuffer!: AudioBuffer
+  audioBuffer?: AudioBuffer | null
   name: string
   single?: boolean
   loading = true
@@ -26,6 +26,11 @@ export class Banger extends Player implements IBanger {
     this.name = params.name
     this.single = params.single
 
+    if (!params.arrayBuffer) {
+      console.error('Banger', this.name, 'no array buffer found!')
+      return
+    }
+
     this.ctx.decodeAudioData(params.arrayBuffer).then((audioBuffer) => {
       this.audioBuffer = audioBuffer
       this.loadSource()
@@ -37,6 +42,12 @@ export class Banger extends Player implements IBanger {
     this.loading = true
     this.source = null
     this.source = this.ctx.createBufferSource()
+
+    if (!this.audioBuffer) {
+      console.error('Banger', this.name, 'no audio buffer found!')
+      return
+    }
+
     this.source.buffer = this.audioBuffer
 
     this.source.addEventListener('ended', () => {
