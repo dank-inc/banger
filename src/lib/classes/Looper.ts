@@ -46,6 +46,10 @@ export class Looper extends Banger {
   setVolume = (value: number) => this.handleVolume(value)
 
   loadSource = () => {
+    if (!this.audioBuffer) {
+      this.onFail('No audio buffer')
+      return
+    }
     this.loading = true
     this.source = null
     this.source = this.ctx.createBufferSource()
