@@ -41,7 +41,7 @@ export class Player {
     this.reverse = params.reverse
     this.loop = params.loop
     this.drift = params.drift || 0 // cents
-    this.ctx = new AudioContext()
+    this.ctx = new window.AudioContext()?.()
     this.source = null
     this.playing = false
     this.playbackRate = params.playbackRate || 1
