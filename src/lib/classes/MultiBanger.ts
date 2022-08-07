@@ -42,10 +42,12 @@ export class MultiBanger extends Player implements IBanger {
     this.source = null
     this.source = this.ctx.createBufferSource()
     // this.source.addEventListener('ended', this.loadSource)
-    this.source.buffer =
-      this.audioBuffers[
-        Math.floor(Math.random() * this.audioBuffers.length - 1)
-      ]
+
+    const i = Math.floor(Math.random() * this.audioBuffers.length)
+
+    console.log('this.source', i, this.audioBuffers.length)
+
+    this.source.buffer = this.audioBuffers[i]
     this.source.addEventListener('ended', () => {
       // console.log('multibanger> ended event fired')
       this.onEnded?.()
