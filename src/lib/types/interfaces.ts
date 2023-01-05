@@ -6,3 +6,5 @@ export interface IBanger {
   onLoaded?: () => void
   play: () => void
 }
+
+export type SpatialVec3 = [x: number, y: number, z: number]

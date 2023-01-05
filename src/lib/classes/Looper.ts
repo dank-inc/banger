@@ -1,6 +1,6 @@
 import { Banger, BangerParams } from './Banger'
 
-type LooperParams = BangerParams & {
+export type LooperParams = BangerParams & {
   loop?: boolean
 }
 

@@ -7,12 +7,13 @@ export type BangerParams = PlayerParams & {
   single?: boolean
 }
 
-export class Banger extends Player implements IBanger {
+export class Banger<T = Record<string, any>> extends Player implements IBanger {
   audioBuffer?: AudioBuffer | null
   name: string
   single?: boolean
   loading = true
   manualStop?: boolean
+  metadata?: T
 
   /**
    * Used for single-shot monophonic sounds (shorter sounds)

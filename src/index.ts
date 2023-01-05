@@ -1,42 +1,29 @@
-import { Banger, MultiBanger, Looper, getWav, getWavs, IBanger } from './lib'
+import {
+  Banger,
+  MultiBanger,
+  Looper,
+  getWav,
+  getWavs,
+  SpatialPlayer,
+  SpatialVec3,
+} from './lib'
+import { getAudio, getEl, getTarget, makeButton, qsi } from './utils'
 
 // @ts-ignore
 // import tezos from './audio/eli7vh-tezos-till-i-bezos-final.wav'
 // @ts-ignore
 // import drag from './audio/drawing.wav'
 
-const makeButton = (
-  el: HTMLElement,
-  player: IBanger,
-  handler?: (e: MouseEvent) => void,
-  name?: string,
-) => {
-  const playerButton = document.createElement('button')
-
-  const eventHandler = (e: MouseEvent) => {
-    e.stopPropagation()
-    player.play()
-  }
-
-  playerButton.addEventListener('click', handler || eventHandler)
-  playerButton.innerHTML = name || player.name
-  el.appendChild(playerButton)
-}
-
-const getEl = (id: string) => document.getElementById(id) as HTMLElement
-const getTarget = (e: MouseEvent) => e.target as HTMLElement
-const qsi = (selector: string) =>
-  document.querySelector(selector) as HTMLInputElement
-
-const getAudio = (id: string) => {
-  const audioContainer = getEl(id)
-  const audio = audioContainer.querySelectorAll('audio')
-  const map: Record<string, HTMLAudioElement> = {}
-
-  Array.from(audio).forEach((el) => {
-    map[el.id] = el as HTMLAudioElement
-  })
-  return map
+type State = {
+  sourceWorldPosition: SpatialVec3
+  listenerWorldPosition: SpatialVec3
+  listenerOrientation: SpatialVec3
+  sourceColor: string
+  listenerColor: string
+  moved: boolean
+  canvasHeight: number
+  canvasWidth: number
+  dragging: boolean
 }
 
 const main = async () => {
@@ -46,15 +33,33 @@ const main = async () => {
 
   const drumsEl = getEl('drums')!
   const rootEl = getEl('root')!
+  const state: State = {
+    moved: false,
+    sourceWorldPosition: [0, 0, 0],
+    listenerWorldPosition: [0, 0, 0],
+    listenerOrientation: [0, 0, -1],
+    sourceColor: `rgb(100, 100, 255, 1)`,
+    listenerColor: `rgb(255, 100, 100, 1)`,
+    canvasHeight: 400,
+    canvasWidth: 600,
+    dragging: false,
+  }
 
-  const ttib = new Looper({
+  const SpatialLooper = SpatialPlayer(Looper)
+
+  const ttib = new SpatialLooper({
     name: 'Looper: Tezos Till I Bezos',
     loop: true,
     arrayBuffer: await getWav(map['tezos'].src),
     onLoaded: () => console.log('>> ttib loaded'),
     onEnded: () => console.log('>> ttib sound ended'),
     onFail: console.error,
+    // @ts-ignore
+    worldPosition: state.sourceWorldPosition,
+    // @ts-ignore
+    audibleDistance: state.canvasHeight / 2,
   })
+
   makeButton(rootEl, ttib)
 
   const draw = new Looper({
@@ -137,6 +142,119 @@ const main = async () => {
   // if (key === 'e') banger.play()
   // if (key === 'q') multiBanger.play()
   // })
+
+  const canvas = document.getElementById('viz') as HTMLCanvasElement
+  const context = canvas.getContext('2d')!
+
+  canvas.width = state.canvasWidth
+  canvas.height = state.canvasHeight
+
+  state.listenerWorldPosition = [canvas.width / 2, 0, canvas.height / 2]
+  state.sourceWorldPosition = [canvas.width / 2, 0, canvas.height / 3]
+
+  // add mouse click listener and set source position to mouse position
+  canvas.addEventListener('click', (e) => {
+    const rect = canvas.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const z = e.clientY - rect.top
+    state.sourceWorldPosition = [x, 0, z]
+    state.moved = true
+  })
+
+  // mouse drag listener
+  canvas.addEventListener('mousedown', (e) => {
+    state.dragging = true
+  })
+
+  canvas.addEventListener('mouseup', (e) => {
+    state.dragging = false
+  })
+
+  canvas.addEventListener('mousemove', (e) => {
+    if (!state.dragging) return
+
+    const rect = canvas.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const z = e.clientY - rect.top
+    state.sourceWorldPosition = [x, 0, z]
+    state.moved = true
+  })
+
+  const drawVisual = () => {
+    context.fillStyle = 'rgb(20, 20, 20, 1)'
+    context.fillRect(0, 0, canvas.width, canvas.height)
+
+    // draw red triangle pointed towards listener orientation
+
+    context.beginPath()
+    context.moveTo(
+      state.listenerWorldPosition[0],
+      state.listenerWorldPosition[2],
+    )
+    context.lineTo(
+      state.listenerWorldPosition[0] + 10,
+      state.listenerWorldPosition[2] + 20,
+    )
+    context.lineTo(
+      state.listenerWorldPosition[0] - 10,
+      state.listenerWorldPosition[2] + 20,
+    )
+    context.closePath()
+    context.fillStyle = state.listenerColor
+    context.fill()
+
+    // draw blue circle at source position
+    context.beginPath()
+    context.arc(
+      state.sourceWorldPosition[0],
+      state.sourceWorldPosition[2],
+      10,
+      0,
+      2 * Math.PI,
+      false,
+    )
+    context.fillStyle = state.sourceColor
+    context.fill()
+
+    // draw audible range circle with gradient fill to edges
+
+    const gradient = context.createRadialGradient(
+      state.listenerWorldPosition[0],
+      state.listenerWorldPosition[2],
+      0,
+      state.listenerWorldPosition[0],
+      state.listenerWorldPosition[2],
+      // @ts-ignore
+      ttib.audibleDistance,
+    )
+
+    gradient.addColorStop(0, 'rgba(100, 100, 100, 0.5)')
+    gradient.addColorStop(1, 'rgba(100, 100, 100, 0)')
+    context.beginPath()
+    context.arc(
+      state.listenerWorldPosition[0],
+      state.listenerWorldPosition[2],
+      // @ts-ignore
+      ttib.audibleDistance,
+      0,
+      2 * Math.PI,
+      false,
+    )
+    context.fillStyle = gradient
+    context.fill()
+
+    // set ttib 3d position
+
+    if (state.moved) {
+      ttib.setWorldPosition(state.sourceWorldPosition)
+      ttib.setSpacialSettings(state.listenerWorldPosition)
+      state.moved = false
+    }
+
+    requestAnimationFrame(drawVisual)
+  }
+
+  drawVisual()
 }
 
 main()

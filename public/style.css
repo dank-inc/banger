@@ -9,7 +9,6 @@
 html {
   padding: 0;
   margin: 0;
-  
 }
 
 body {
@@ -19,13 +18,14 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh;
-  grid-template-rows: 100px auto;
+  grid-template-rows: 65px auto;
+  gap: 0.5rem;
 }
 
 h1 {
   background: #222;
   text-align: center;
-  padding: 2rem;
+  padding: 1rem;
   font-family: monospace;
   margin: 0;
 }
@@ -49,10 +49,10 @@ button {
 }
 
 #controls {
-  padding: 2rem;
+  /* padding: 2rem; */
   margin: auto;
   width: 100%;
-  max-width: 900px;
+  max-width: 600px;
   display: grid;
   gap: 1rem;
   align-items: center;
@@ -64,4 +64,8 @@ button {
   gap: 1em;
   justify-content: space-between;
   align-items: center;
+}
+
+#viz {
+  outline: 1px solid #aaa;
 }
