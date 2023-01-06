@@ -64,6 +64,7 @@ export class Looper extends Banger {
     this.source
       .connect(this.gainNode)
       .connect(this.panNode)
+      .connect(this.filterNode)
       .connect(this.ctx.destination)
     this.source.loop = !!this.loop
     this.loading = false

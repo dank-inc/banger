@@ -18,6 +18,7 @@ export class Player {
 
   gainNode: GainNode
   panNode: StereoPannerNode
+  filterNode: BiquadFilterNode
 
   reverse?: boolean
   loop?: boolean
@@ -55,6 +56,16 @@ export class Player {
     this.gainNode.gain.value = params.volume || 1
 
     this.panNode = new StereoPannerNode(this.ctx, { pan: params.pan || 0 })
+    this.filterNode = new BiquadFilterNode(this.ctx, {
+      type: 'lowpass',
+      frequency: 1000,
+      Q: 1,
+    })
+  }
+
+  handleCutoff = (hz: number, q?: number) => {
+    this.filterNode.frequency.value = hz
+    if (q) this.filterNode.Q.value = q
   }
 
   handleReverse = () => {
@@ -69,7 +80,7 @@ export class Player {
   }
 
   handleVolume = (value: number) => {
-    this.gainNode.gain.value = value
+    this.gainNode.gain.value = Math.max(value, 0)
   }
 
   handlePan = (value: number) => {

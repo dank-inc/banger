@@ -16,14 +16,14 @@ export function SpatialPlayer<T extends Constructor<Banger>>(Base: T) {
   return class extends Base {
     worldPosition: SpatialVec3
     audibleDistance: number
-    orientation: SpatialVec3
+    orientation?: SpatialVec3
 
     constructor(...props: any[]) {
       super(...props)
       const [p] = props as [SpatialAudioParams]
       this.worldPosition = p.worldPosition || [0, 0, 0]
       this.audibleDistance = p.audibleDistance || 10
-      this.orientation = p.orientation || [0, 0, 0]
+      this.orientation = p.orientation
     }
 
     setWorldPosition = ([x, y, z]: SpatialVec3) =>
@@ -33,26 +33,37 @@ export function SpatialPlayer<T extends Constructor<Banger>>(Base: T) {
 
     setSpacialSettings = (
       listenerPosition: SpatialVec3,
-      // listenerOrientation: SpatialVec3,
+      listenerOrientation: SpatialVec3,
     ) => {
-      const [x, y, z] = this.worldPosition
-      const [lx, ly, lz] = listenerPosition
-      const pan = (x - lx) / this.audibleDistance
+      // X = right
+      // Y = up
+      // Z = forward
+      const [x, _y, z] = this.worldPosition // B
+      const [lx, _ly, lz] = listenerPosition // A
+      const [ox, _oy, oz] = listenerOrientation // Ray direction
+
+      const angle = Math.atan2(oz, ox) - Math.atan2(z - lz, x - lx) + Math.PI
+      const pan = Math.sin(angle)
 
       this.handlePan(pan)
 
       const distance = Math.sqrt((x - lx) ** 2 + (z - lz) ** 2)
       const uVolume = Math.max(1 - distance / this.audibleDistance, 0)
 
-      const volume = uVolume * 1
-      this.handleVolume(volume)
+      // use angle to determine cutoff
+      // if angle is 0, cutoff is 20000
+      // if angle is 180, cutoff is 5000
+      const inFront = (x - lx) * ox + (z - lz) * oz > 0
 
-      console.log('spatial> ', {
-        pan,
-        volume,
-        //, distance, x, y, z, lx, ly, lz
-      })
-      // console.log('spatial> ', this.panNode.pan.value, this.gainNode.gain.value)
+      // is source in front of listener?
+
+      if (inFront) {
+        this.handleCutoff(20000)
+        this.handleVolume(uVolume)
+      } else {
+        this.handleCutoff(5000)
+        this.handleVolume(uVolume - 0.1)
+      }
     }
   }
 }

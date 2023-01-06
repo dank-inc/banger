@@ -24,6 +24,8 @@ type State = {
   canvasHeight: number
   canvasWidth: number
   dragging: boolean
+  time: number
+  lastTime: number
 }
 
 const main = async () => {
@@ -37,12 +39,14 @@ const main = async () => {
     moved: false,
     sourceWorldPosition: [0, 0, 0],
     listenerWorldPosition: [0, 0, 0],
-    listenerOrientation: [0, 0, -1],
+    listenerOrientation: [1, 0, -1],
     sourceColor: `rgb(100, 100, 255, 1)`,
     listenerColor: `rgb(255, 100, 100, 1)`,
     canvasHeight: 400,
     canvasWidth: 600,
     dragging: false,
+    time: 0,
+    lastTime: 0,
   }
 
   const SpatialLooper = SpatialPlayer(Looper)
@@ -180,28 +184,64 @@ const main = async () => {
     state.moved = true
   })
 
+  state.lastTime = Date.now()
+
   const drawVisual = () => {
+    const now = Date.now()
+    const dt = now - state.lastTime
+    state.lastTime = now
+
+    state.time += dt / 1000
+
     context.fillStyle = 'rgb(20, 20, 20, 1)'
     context.fillRect(0, 0, canvas.width, canvas.height)
 
-    // draw red triangle pointed towards listener orientation
+    // listner angle from orientation x,z
+    const listenerAngle = Math.atan2(
+      state.listenerOrientation[2],
+      state.listenerOrientation[0],
+    )
 
     context.beginPath()
+    // draw arrow from listener origin out 30 units in direction of listener orientation
     context.moveTo(
       state.listenerWorldPosition[0],
       state.listenerWorldPosition[2],
     )
     context.lineTo(
-      state.listenerWorldPosition[0] + 10,
-      state.listenerWorldPosition[2] + 20,
+      state.listenerWorldPosition[0] + 30 * Math.cos(listenerAngle),
+      state.listenerWorldPosition[2] + 30 * Math.sin(listenerAngle),
     )
-    context.lineTo(
-      state.listenerWorldPosition[0] - 10,
-      state.listenerWorldPosition[2] + 20,
+    context.strokeStyle = 'white'
+    context.lineWidth = 10
+    context.stroke()
+
+    // white circle at listener position
+    context.beginPath()
+    context.arc(
+      state.listenerWorldPosition[0],
+      state.listenerWorldPosition[2],
+      10,
+      0,
+      2 * Math.PI,
+      false,
     )
-    context.closePath()
-    context.fillStyle = state.listenerColor
+    context.fillStyle = 'white'
     context.fill()
+
+    // draw grey line from listener to source
+    context.beginPath()
+    context.moveTo(
+      state.listenerWorldPosition[0],
+      state.listenerWorldPosition[2],
+    )
+    context.lineTo(state.sourceWorldPosition[0], state.sourceWorldPosition[2])
+    context.strokeStyle = 'grey'
+    context.lineWidth = 1
+    context.stroke()
+
+    // rotate listener
+    // state.listenerOrientation = [Math.cos(state.time), 0, Math.sin(state.time)]
 
     // draw blue circle at source position
     context.beginPath()
@@ -245,11 +285,14 @@ const main = async () => {
 
     // set ttib 3d position
 
-    if (state.moved) {
-      ttib.setWorldPosition(state.sourceWorldPosition)
-      ttib.setSpacialSettings(state.listenerWorldPosition)
-      state.moved = false
-    }
+    // if (state.moved) {
+    ttib.setWorldPosition(state.sourceWorldPosition)
+    ttib.setSpacialSettings(
+      state.listenerWorldPosition,
+      state.listenerOrientation,
+    )
+    state.moved = false
+    // }
 
     requestAnimationFrame(drawVisual)
   }
