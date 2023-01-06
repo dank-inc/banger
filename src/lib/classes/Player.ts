@@ -1,5 +1,6 @@
 export type PlayerParams = {
   volume?: number
+  volumeScale?: number
   pan?: number
   reverse?: boolean
   loop?: boolean
@@ -20,6 +21,7 @@ export class Player {
   panNode: StereoPannerNode
   filterNode: BiquadFilterNode
 
+  volumeScale: number
   reverse?: boolean
   loop?: boolean
   drift: number
@@ -46,6 +48,7 @@ export class Player {
     this.source = null
     this.playing = false
     this.playbackRate = params.playbackRate || 1
+    this.volumeScale = params.volumeScale || 1
 
     this.onLoaded = params.onLoaded
     this.onFail = params.onFail

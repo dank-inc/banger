@@ -48,7 +48,8 @@ export function SpatialPlayer<T extends Constructor<Banger>>(Base: T) {
       this.handlePan(pan)
 
       const distance = Math.sqrt((x - lx) ** 2 + (z - lz) ** 2)
-      const uVolume = Math.max(1 - distance / this.audibleDistance, 0)
+      const uVolume =
+        Math.max(1 - distance / this.audibleDistance, 0) * this.volumeScale
 
       // use angle to determine cutoff
       // if angle is 0, cutoff is 20000
