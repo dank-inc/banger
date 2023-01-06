@@ -6,6 +6,7 @@ import {
   getWavs,
   SpatialPlayer,
   SpatialVec3,
+  SpatialLooper,
 } from './lib'
 import { getAudio, getEl, getTarget, makeButton, qsi } from './utils'
 
@@ -48,8 +49,6 @@ const main = async () => {
     time: 0,
     lastTime: 0,
   }
-
-  const SpatialLooper = SpatialPlayer(Looper)
 
   const ttib = new SpatialLooper({
     name: 'Looper: Tezos Till I Bezos',

@@ -73,6 +73,36 @@ type PlayerParams = {
 }
 ```
 
+# Spatial Audio (wip)
+
+currently only supports X,Y panning, attenuation, and head simulation, but it's still fun to use.
+
+```ts
+const ttib = new SpatialLooper({
+  name: 'Looper: Tezos Till I Bezos',
+  loop: true,
+  arrayBuffer: await getWav(map['tezos'].src),
+  onLoaded: () => console.log('>> ttib loaded'),
+  onEnded: () => console.log('>> ttib sound ended'),
+  onFail: console.error,
+  // @ts-ignore
+  worldPosition: state.sourceWorldPosition,
+  // @ts-ignore
+  audibleDistance: 100, // distance in units until audio is not heard
+})
+
+// if audio emitter position has changed
+ttib.setWorldPosition(
+  sourcePosition, // [x, y, z] (y is up)
+)
+
+// upon changing of listener position
+ttib.setSpacialSettings(
+  listenerPosition, // [x, y, z] (y us up)
+  listenerOrientation, // [x, y, z]
+)
+```
+
 # Todo
 
 - RekkidPlaya

@@ -2,7 +2,7 @@
 
 import { SpatialVec3 } from '../types/interfaces'
 import { Banger, BangerParams } from './Banger'
-import { LooperParams } from './Looper'
+import { Looper, LooperParams } from './Looper'
 
 type SpatialAudioParams = (BangerParams | LooperParams) & {
   worldPosition?: SpatialVec3
@@ -67,5 +67,8 @@ export function SpatialPlayer<T extends Constructor<Banger>>(Base: T) {
     }
   }
 }
+
+export const SpatialLooper = SpatialPlayer(Looper)
+export const SpatialBanger = SpatialPlayer(Banger)
 
 // export class Banger3D extends SpatialPlayer(Banger)
