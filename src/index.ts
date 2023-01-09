@@ -61,7 +61,7 @@ const main = async () => {
   }
 
   const ttib = new SpatialLooper({
-    name: 'Looper: Tezos Till I Bezos',
+    name: 'Play: Tezos Till I Bezos (looper, spatial)',
     loop: true,
     arrayBuffer: await getWav(map['tezos'].src),
     onLoaded: () => console.log('>> ttib loaded'),
@@ -90,7 +90,7 @@ const main = async () => {
   })
 
   const kick = new Banger({
-    name: 'Banger: Kick',
+    name: 'Play: Kick (Banger)',
     arrayBuffer: await getWav(
       'https://cwilso.github.io/MIDIDrums/sounds/drum-samples/CR78/kick.wav',
     ),
@@ -110,7 +110,7 @@ const main = async () => {
   ]
 
   const multiBanger = new MultiBanger({
-    name: 'MultiBanger: drumz',
+    name: 'Play: drumz (multi-banger)',
     arrayBuffers: await getWavs(files),
     drift: 1000,
     onLoaded: () => console.log('drum loaded'),
@@ -341,12 +341,8 @@ const main = async () => {
 
       const degrees = Math.sin(angle + Math.PI / 2)
 
-      debug(
-        'listener x,z',
-        fix(x - canvas.width / 2),
-        fix(z - canvas.height / 2),
-      )
-      debug('listener rot', ...state.listenerOrientation.map((v) => fix(v, 2)))
+      debug('lis x,z', fix(x - canvas.width / 2), fix(z - canvas.height / 2))
+      debug('lis rot', ...state.listenerOrientation.map((v) => fix(v, 2)))
       debug(
         'source x,z',
         fix(sx - canvas.width / 2),

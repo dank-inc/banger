@@ -16,10 +16,10 @@ body {
   color: #aaa;
   display: grid;
   margin: 0;
-  padding: 0;
-  height: 100vh;
-  grid-template-rows: 65px auto;
-  gap: 0.5rem;
+  min-height: 100vh;
+  grid-template-rows: auto;
+  gap: 2rem;
+  padding: 2rem;
   font-family: monospace;
 }
 
@@ -34,7 +34,7 @@ h1 {
 h3 {
   font-family: monospace;
   margin: 0;
-  margin-top: 2rem;
+  /* margin-top: 2rem; */
 }
 
 
@@ -74,14 +74,12 @@ button {
 
 #debug {
   background: #222;
-  color: #aaa;
   padding: 1rem;
   border-radius: 1rem;
   font-weight: 600;
   gap: 1ch;
   display:grid;
   grid-template-columns: repeat(4, 1fr);
-  /* justify-content: center; */
 }
 
 .debug-container {
@@ -89,6 +87,18 @@ button {
   display: grid
 }
 
+.debug-name {
+  color: #fff2;
+}
+
 #debug-template {
   display: none;
+}
+
+#manual {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: #fff1;
+  grid-column: span 4;
 }

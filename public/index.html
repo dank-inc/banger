@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="stylesheet" href="style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Banger</title>
+    <title>Banger.js</title>
   </head>
   <body>
     <div id="audio">
@@ -13,14 +13,19 @@
       <audio id="tezos" src="audio/eli7vh-tezos-till-i-bezos-final.wav"></audio>
       <audio id="drawing" src="audio/drawing.wav"></audio>
     </div>
-    <h1>The Dankest Banger</h1>
     <div id="visuals">
-      <h3>Visualizer (click to pan and attenuate)</h3>
+      <h3>Banger.js</h3>
       <div id="debug-template" class="debug-container">
         <div class="debug-name"></div>
         <div class="debug-value"></div>
       </div>
-      <div id="debug"></div>
+      <div id="debug">
+        <div id="manual">
+          <span>click: move source</span>
+          <span>ctrl+click: move lis</span>
+          <span>shift+click: rotate lis</span>
+        </div>
+      </div>
       <canvas id="viz"></canvas>
       <div id="root"></div>
     </div>
