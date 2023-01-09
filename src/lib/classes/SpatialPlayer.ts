@@ -34,7 +34,7 @@ export function SpatialPlayer<T extends Constructor<Banger>>(Base: T) {
     setSpatialValues = (
       listenerAngle: number, // from listener's pov (radians)
       distance = 0, // meters
-      obstacles = false,
+      _obstacles = false,
     ) => {
       // use angle to determine cutoff
       // if angle is 0, cutoff is 20000
@@ -64,14 +64,10 @@ export function SpatialPlayer<T extends Constructor<Banger>>(Base: T) {
     ): [listenerAngle: number, distance: number] => {
       const [wpx, _wpy, wpz] = this.worldPosition
 
-      console.log('get3DValues')
-
       const listenerAngle =
         Math.atan2(lox, loz) - Math.atan2(wpx - lpx, wpz - lpz)
       const distance = Math.sqrt((wpx - lpx) ** 2 + (wpz - lpz) ** 2)
       const degrees = (listenerAngle * 180) / Math.PI
-
-      console.log('3D values>', degrees.toFixed(), listenerAngle)
 
       return [listenerAngle, distance]
     }

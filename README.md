@@ -75,7 +75,7 @@ type PlayerParams = {
 
 # Spatial Audio (wip)
 
-currently only supports X,Y panning, attenuation, and head simulation, but it's still fun to use.
+currently only 2d panning, attenuation, and head simulation, but it's still fun to use.
 
 ```ts
 const ttib = new SpatialLooper({
@@ -97,10 +97,12 @@ ttib.setWorldPosition(
 )
 
 // upon changing of listener position
-ttib.setSpacialSettings(
-  listenerPosition, // [x, y, z] (y us up)
-  listenerOrientation, // [x, y, z]
+const [angle, distance] = ttib.get3dValues(
+  listenerWorldPosition,
+  listenerWorldOrientation
 )
+
+ttib.setSpatialValues(angle, distance)
 ```
 
 # Todo
