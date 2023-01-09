@@ -20,6 +20,7 @@ body {
   height: 100vh;
   grid-template-rows: 65px auto;
   gap: 0.5rem;
+  font-family: monospace;
 }
 
 h1 {
@@ -68,4 +69,13 @@ button {
 
 #viz {
   outline: 1px solid #aaa;
+}
+
+#debug {
+  font-weight: 600;
+  gap: 1ch;
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-content: center;
+  padding: 0.5rem;
 }

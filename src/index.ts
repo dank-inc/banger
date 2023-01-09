@@ -27,6 +27,7 @@ type State = {
   dragging: boolean
   time: number
   lastTime: number
+  debug: Record<string, any>
 }
 
 const main = async () => {
@@ -40,7 +41,7 @@ const main = async () => {
     moved: false,
     sourceWorldPosition: [0, 0, 0],
     listenerWorldPosition: [0, 0, 0],
-    listenerOrientation: [1, 0, -1],
+    listenerOrientation: [0, 0, -1],
     sourceColor: `rgb(100, 100, 255, 1)`,
     listenerColor: `rgb(255, 100, 100, 1)`,
     canvasHeight: 400,
@@ -48,6 +49,7 @@ const main = async () => {
     dragging: false,
     time: 0,
     lastTime: 0,
+    debug: {},
   }
 
   const ttib = new SpatialLooper({
@@ -155,13 +157,30 @@ const main = async () => {
   state.listenerWorldPosition = [canvas.width / 2, 0, canvas.height / 2]
   state.sourceWorldPosition = [canvas.width / 2, 0, canvas.height / 3]
 
+  const setListenerOrientation = (x: number, z: number) => {
+    const dx = x - state.listenerWorldPosition[0]
+    const dz = z - state.listenerWorldPosition[2]
+    const angle = Math.atan2(dz, dx)
+    state.listenerOrientation = [Math.cos(angle), 0, Math.sin(angle)]
+  }
+
+  const setListenerWorldPosition = (x: number, z: number) => {
+    state.listenerWorldPosition = [x, 0, z]
+  }
+
   // add mouse click listener and set source position to mouse position
   canvas.addEventListener('click', (e) => {
+    state.moved = true
+
     const rect = canvas.getBoundingClientRect()
     const x = e.clientX - rect.left
     const z = e.clientY - rect.top
+
+    // if right click, set listener orientation to look at mouse position
+    if (e.shiftKey) return setListenerOrientation(x, z)
+    if (e.altKey) return setListenerWorldPosition(x, z)
+
     state.sourceWorldPosition = [x, 0, z]
-    state.moved = true
   })
 
   // mouse drag listener
@@ -175,15 +194,21 @@ const main = async () => {
 
   canvas.addEventListener('mousemove', (e) => {
     if (!state.dragging) return
+    state.moved = true
 
     const rect = canvas.getBoundingClientRect()
     const x = e.clientX - rect.left
     const z = e.clientY - rect.top
-    state.sourceWorldPosition = [x, 0, z]
-    state.moved = true
+
+    if (e.shiftKey) return setListenerOrientation(x, z)
+    else if (e.altKey) return setListenerWorldPosition(x, z)
+    else state.sourceWorldPosition = [x, 0, z]
   })
 
+  canvas.addEventListener('contextmenu', (event) => event.preventDefault())
+
   state.lastTime = Date.now()
+  state.debug = getEl('debug')
 
   const drawVisual = () => {
     const now = Date.now()
@@ -212,7 +237,7 @@ const main = async () => {
       state.listenerWorldPosition[2] + 30 * Math.sin(listenerAngle),
     )
     context.strokeStyle = 'white'
-    context.lineWidth = 10
+    context.lineWidth = 3
     context.stroke()
 
     // white circle at listener position
@@ -220,7 +245,7 @@ const main = async () => {
     context.arc(
       state.listenerWorldPosition[0],
       state.listenerWorldPosition[2],
-      10,
+      5,
       0,
       2 * Math.PI,
       false,
@@ -282,16 +307,38 @@ const main = async () => {
     context.fillStyle = gradient
     context.fill()
 
-    // set ttib 3d position
+    if (state.moved) {
+      ttib.setWorldPosition(state.sourceWorldPosition)
+      const [angle, distance] = ttib.get3DValues(
+        state.listenerWorldPosition,
+        state.listenerOrientation,
+      )
+      ttib.setSpatialValues(angle, distance)
 
-    // if (state.moved) {
-    ttib.setWorldPosition(state.sourceWorldPosition)
-    ttib.setSpacialSettings(
-      state.listenerWorldPosition,
-      state.listenerOrientation,
-    )
-    state.moved = false
-    // }
+      const degrees = Math.sin(angle + Math.PI / 2)
+
+      getEl('angle').innerHTML = `rad ang: ${angle.toFixed(2)} angle: ${degrees
+        .toFixed(2)
+        .padStart(3, '_')}`
+      const pan = ttib.panNode.pan.value
+      const cutoff = ttib.filterNode.frequency.value
+      const gain = ttib.gainNode.gain.value
+      getEl('panning').innerHTML = `pan: ${pan > 0 ? 'R' : 'L'} ${Math.abs(
+        pan * 100,
+      )
+        .toFixed(0)
+        .padStart(3, '_')}`
+
+      getEl('cutoff').innerHTML = `cutoff: ${cutoff
+        .toFixed(0)
+        .padStart(6, '_')}hz`
+
+      getEl('gain').innerHTML = `gain: ${(gain * 100)
+        .toFixed()
+        .padStart(3, '_')}%`
+
+      state.moved = false
+    }
 
     requestAnimationFrame(drawVisual)
   }

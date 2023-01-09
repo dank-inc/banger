@@ -31,41 +31,49 @@ export function SpatialPlayer<T extends Constructor<Banger>>(Base: T) {
 
     setOrientation = ([x, y, z]: SpatialVec3) => (this.orientation = [x, y, z])
 
-    setSpacialSettings = (
-      listenerPosition: SpatialVec3,
-      listenerOrientation: SpatialVec3,
+    setSpatialValues = (
+      listenerAngle: number, // from listener's pov (radians)
+      distance = 0, // meters
+      obstacles = false,
     ) => {
-      // X = right
-      // Y = up
-      // Z = forward
-      const [x, _y, z] = this.worldPosition // B
-      const [lx, _ly, lz] = listenerPosition // A
-      const [ox, _oy, oz] = listenerOrientation // Ray direction
-
-      const angle = Math.atan2(oz, ox) - Math.atan2(z - lz, x - lx) + Math.PI
-      const pan = Math.sin(angle)
-
-      this.handlePan(pan)
-
-      const distance = Math.sqrt((x - lx) ** 2 + (z - lz) ** 2)
-      const uVolume =
-        Math.min(Math.max(1 - distance / this.audibleDistance, 0), 1) *
-        this.volumeScale
-
       // use angle to determine cutoff
       // if angle is 0, cutoff is 20000
       // if angle is 180, cutoff is 5000
-      const inFront = (x - lx) * ox + (z - lz) * oz > 0
+      const pan = Math.sin(listenerAngle)
 
-      // is source in front of listener?
+      this.handlePan(pan)
 
-      if (inFront) {
-        this.handleCutoff(20000)
-        this.handleVolume(uVolume)
-      } else {
+      const volume =
+        Math.min(Math.max(1 - distance / this.audibleDistance, 0), 1) *
+        this.volumeScale
+
+      const normalizedAngle = Math.sin(listenerAngle + Math.PI / 2)
+
+      if (normalizedAngle < 0) {
         this.handleCutoff(5000)
-        this.handleVolume(uVolume - 0.1)
+        this.handleVolume(volume - 0.1)
+      } else {
+        this.handleCutoff(20000)
+        this.handleVolume(volume)
       }
+    }
+
+    get3DValues = (
+      [lpx, _lpy, lpz]: SpatialVec3,
+      [lox, _loy, loz]: SpatialVec3,
+    ): [listenerAngle: number, distance: number] => {
+      const [wpx, _wpy, wpz] = this.worldPosition
+
+      console.log('get3DValues')
+
+      const listenerAngle =
+        Math.atan2(lox, loz) - Math.atan2(wpx - lpx, wpz - lpz)
+      const distance = Math.sqrt((wpx - lpx) ** 2 + (wpz - lpz) ** 2)
+      const degrees = (listenerAngle * 180) / Math.PI
+
+      console.log('3D values>', degrees.toFixed(), listenerAngle)
+
+      return [listenerAngle, distance]
     }
   }
 }
