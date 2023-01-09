@@ -14,19 +14,18 @@
       <audio id="drawing" src="audio/drawing.wav"></audio>
     </div>
     <h1>The Dankest Banger</h1>
-    <div id="controls">
-      <div width="100%" style="text-align: center">
-        <h3>Visualizer (click to pan and attenuate)</h3>
-        <div id="debug">
-          <div id="angle"></div>
-          <div id="panning"></div>
-          <div id="cutoff"></div>
-          <div id="gain"></div>
-        </div>
-        <canvas id="viz"></canvas>
+    <div id="visuals">
+      <h3>Visualizer (click to pan and attenuate)</h3>
+      <div id="debug-template" class="debug-container">
+        <div class="debug-name"></div>
+        <div class="debug-value"></div>
       </div>
-      <h3>Looping Song W/ Controls</h3>
+      <div id="debug"></div>
+      <canvas id="viz"></canvas>
       <div id="root"></div>
+    </div>
+    <div id="controls">
+      <h3>Looping Song W/ Controls</h3>
       <div id="buttons">
         <button id="reverse">Reverse</button>
         <button id="stop">Stop</button>

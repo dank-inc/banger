@@ -49,7 +49,7 @@ button {
   font-family: monospace;
 }
 
-#controls {
+#controls, #visuals {
   /* padding: 2rem; */
   margin: auto;
   width: 100%;
@@ -71,11 +71,24 @@ button {
   outline: 1px solid #aaa;
 }
 
+
 #debug {
+  background: #222;
+  color: #aaa;
+  padding: 1rem;
+  border-radius: 1rem;
   font-weight: 600;
   gap: 1ch;
   display:grid;
   grid-template-columns: repeat(4, 1fr);
-  justify-content: center;
-  padding: 0.5rem;
+  /* justify-content: center; */
+}
+
+.debug-container {
+  text-align: center;
+  display: grid
+}
+
+#debug-template {
+  display: none;
 }

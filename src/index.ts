@@ -8,7 +8,15 @@ import {
   SpatialVec3,
   SpatialLooper,
 } from './lib'
-import { getAudio, getEl, getTarget, makeButton, qsi } from './utils'
+import {
+  debug,
+  fix,
+  getAudio,
+  getEl,
+  getTarget,
+  makeButton,
+  qsi,
+} from './utils'
 
 // @ts-ignore
 // import tezos from './audio/eli7vh-tezos-till-i-bezos-final.wav'
@@ -307,35 +315,55 @@ const main = async () => {
     context.fillStyle = gradient
     context.fill()
 
+    // draw axis lines
+    context.strokeStyle = '#ddd2'
+    context.lineWidth = 1
+
+    context.beginPath()
+
+    context.moveTo(canvas.width / 2, 0)
+    context.lineTo(canvas.width / 2, canvas.height)
+
+    context.moveTo(0, canvas.height / 2)
+    context.lineTo(canvas.width, canvas.height / 2)
+    context.stroke()
+
     if (state.moved) {
-      ttib.setWorldPosition(state.sourceWorldPosition)
+      const [sx, sy, sz] = state.sourceWorldPosition
+      ttib.setWorldPosition([sx - canvas.width / 2, sy, sz - canvas.height / 2])
+
+      const [x, y, z] = state.listenerWorldPosition
       const [angle, distance] = ttib.get3DValues(
-        state.listenerWorldPosition,
+        [x - canvas.width / 2, y, z - canvas.height / 2],
         state.listenerOrientation,
       )
       ttib.setSpatialValues(angle, distance)
 
       const degrees = Math.sin(angle + Math.PI / 2)
 
-      getEl('angle').innerHTML = `rad ang: ${angle.toFixed(2)} angle: ${degrees
-        .toFixed(2)
-        .padStart(3, '_')}`
+      debug(
+        'listener x,z',
+        fix(x - canvas.width / 2),
+        fix(z - canvas.height / 2),
+      )
+      debug('listener rot', ...state.listenerOrientation.map((v) => fix(v, 2)))
+      debug(
+        'source x,z',
+        fix(sx - canvas.width / 2),
+        fix(sz - canvas.height / 2),
+      )
+
+      debug('angle', fix(angle, 2))
+      debug('degrees', fix(degrees, 2))
+      debug('distance', fix(distance, 1))
+
       const pan = ttib.panNode.pan.value
       const cutoff = ttib.filterNode.frequency.value
       const gain = ttib.gainNode.gain.value
-      getEl('panning').innerHTML = `pan: ${pan > 0 ? 'R' : 'L'} ${Math.abs(
-        pan * 100,
-      )
-        .toFixed(0)
-        .padStart(3, '_')}`
 
-      getEl('cutoff').innerHTML = `cutoff: ${cutoff
-        .toFixed(0)
-        .padStart(6, '_')}hz`
-
-      getEl('gain').innerHTML = `gain: ${(gain * 100)
-        .toFixed()
-        .padStart(3, '_')}%`
+      debug('panning', pan > 0 ? 'R' : 'L', fix(Math.abs(pan * 100)))
+      debug('cutoff', fix(cutoff), 'hz')
+      debug('gain', fix(gain * 100), '%')
 
       state.moved = false
     }
