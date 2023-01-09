@@ -61,7 +61,7 @@ export function SpatialPlayer<T extends Constructor<Banger>>(Base: T) {
     get3DValues = (
       [lpx, _lpy, lpz]: SpatialVec3,
       [lox, _loy, loz]: SpatialVec3,
-    ): [listenerAngle: number, distance: number] => {
+    ): [listenerAngle: number, distance: number, degrees: number] => {
       const [wpx, _wpy, wpz] = this.worldPosition
 
       const listenerAngle =
@@ -69,7 +69,7 @@ export function SpatialPlayer<T extends Constructor<Banger>>(Base: T) {
       const distance = Math.sqrt((wpx - lpx) ** 2 + (wpz - lpz) ** 2)
       const degrees = (listenerAngle * 180) / Math.PI
 
-      return [listenerAngle, distance]
+      return [listenerAngle, distance, degrees]
     }
   }
 }
