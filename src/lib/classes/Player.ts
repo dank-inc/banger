@@ -48,7 +48,7 @@ export class Player {
     this.source = null
     this.playing = false
     this.playbackRate = params.playbackRate || 1
-    this.volumeScale = params.volumeScale || 1
+    this.volumeScale = params.volumeScale ?? 1
 
     this.onLoaded = params.onLoaded
     this.onFail = params.onFail
@@ -56,7 +56,7 @@ export class Player {
     this.onEnded = params.onEnded
 
     this.gainNode = this.ctx.createGain()
-    this.gainNode.gain.value = params.volume || 1
+    this.gainNode.gain.value = params.volume ?? 1
 
     this.panNode = new StereoPannerNode(this.ctx, { pan: params.pan || 0 })
     this.filterNode = new BiquadFilterNode(this.ctx, {
