@@ -352,6 +352,8 @@ const main = async () => {
       debug('angle', fix(angle, 2))
       debug('degrees', fix(degrees, 2))
       debug('distance', fix(distance, 1))
+      debug('audible range', fix(ttib.audibleDistance))
+      debug('volume scale', fix(ttib.volumeScale, 1))
 
       const pan = ttib.panNode.pan.value
       const cutoff = ttib.filterNode.frequency.value

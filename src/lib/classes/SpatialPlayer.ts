@@ -51,7 +51,7 @@ export function SpatialPlayer<T extends Constructor<Banger>>(Base: T) {
 
       if (normalizedAngle < 0) {
         this.handleCutoff(5000)
-        this.handleVolume(volume - 0.1)
+        this.handleVolume(volume * 0.8)
       } else {
         this.handleCutoff(20000)
         this.handleVolume(volume)
