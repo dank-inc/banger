@@ -40,3 +40,7 @@ export const getFileList = async (url: string): Promise<string[]> => {
 export const createBanger = async () => {
   // create a banger and allow loading in the thingy
 }
+
+export const clamp = (num: number, min: number, max: number) => {
+  return Math.min(Math.max(num, min), max)
+}

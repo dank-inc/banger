@@ -1,6 +1,7 @@
 // typescript mixin for Banger and Looper that adds spatialization
 
 import { SpatialVec3 } from '../types/interfaces'
+import { clamp } from '../utils'
 import { Banger, BangerParams } from './Banger'
 import { Looper, LooperParams } from './Looper'
 
@@ -44,8 +45,7 @@ export function SpatialPlayer<T extends Constructor<Banger>>(Base: T) {
       this.handlePan(pan)
 
       const volume =
-        Math.min(Math.max(1 - distance / this.audibleDistance, 0), 1) *
-        this.volumeScale
+        clamp(1 - distance / this.audibleDistance, 0, 1) * this.volumeScale
 
       const normalizedAngle = Math.sin(listenerAngle + Math.PI / 2)
 
