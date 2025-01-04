@@ -9,7 +9,7 @@ randomized sounds!
 
 # Usage
 
-[NPM](https://www.npmjs.com/package/@dank-inc/banger)
+[![npm version](https://badge.fury.io/js/@dank-inc%2Fbanger.svg)](https://badge.fury.io/js/@dank-inc%2Fbanger)
 
 ```
 npm install @dank-inc/banger
