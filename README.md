@@ -9,6 +9,12 @@ randomized sounds!
 
 # Usage
 
+[NPM](https://www.npmjs.com/package/@dank-inc/banger)
+
+```
+npm install @dank-inc/banger
+```
+
 ## Banger
 
 - single soundfile player
@@ -99,7 +105,7 @@ ttib.setWorldPosition(
 // upon changing of listener position
 const [angle, distance] = ttib.get3dValues(
   listenerWorldPosition,
-  listenerWorldOrientation
+  listenerWorldOrientation,
 )
 
 ttib.setSpatialValues(angle, distance)
