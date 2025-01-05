@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "dev": "esbuild ./src/index.ts --serve=1234 --outdir=./public --servedir=./public --bundle",
-    "build": "esbuild ./src/index.ts --outdir=./lib --bundle",
+    "build": "esbuild ./src/index.ts --outdir=./dist --bundle",
     "lint": "tsc --noEmit",
     "compile": "rm -rf lib && tsc",
     "compile:mini": "esbuild ./src/index.ts --outdir=./lib --bundle --minify --format=cjs && echo 'THIS DOESNT WORK FFS'",
