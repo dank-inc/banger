@@ -7,6 +7,8 @@ This is a WebAudio API library written with Typescript
 infinite polyphony!
 randomized sounds!
 
+[live demo](https://banger.elijahlucian.ca/) 🔊🔥🔥🔥
+
 # Usage
 
 [![npm version](https://badge.fury.io/js/@dank-inc%2Fbanger.svg)](https://badge.fury.io/js/@dank-inc%2Fbanger)
