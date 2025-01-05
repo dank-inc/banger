@@ -17,5 +17,5 @@
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
     "lib": ["DOM", "ESNext"]
   },
-  "include": ["src/lib"]
+  "include": ["src/lib", "demo"]
 }

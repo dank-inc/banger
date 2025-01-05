@@ -7,7 +7,7 @@ import {
   SpatialPlayer,
   SpatialVec3,
   SpatialLooper,
-} from './lib'
+} from '../src/lib'
 import {
   debug,
   fix,
@@ -16,12 +16,14 @@ import {
   getTarget,
   makeButton,
   qsi,
-} from './utils'
+} from '../src/utils'
 
 // @ts-ignore
 // import tezos from './audio/eli7vh-tezos-till-i-bezos-final.wav'
 // @ts-ignore
 // import drag from './audio/drawing.wav'
+
+// TODO: upload all things to static assets.
 
 type State = {
   sourceWorldPosition: SpatialVec3
@@ -144,6 +146,7 @@ const main = async () => {
   const clickHander = (e: MouseEvent) => {
     const id = getTarget(e).id
     console.log(id, 'click')
+    // @ts-expect-error todo: fix
     ttib[id]?.()
   }
 
