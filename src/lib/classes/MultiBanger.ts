@@ -1,15 +1,17 @@
 import { IBanger } from '..'
 import { Player, PlayerParams } from './Player'
 
-type Params = PlayerParams & {
+export type MultiBangerProps = PlayerParams & {
   name: string
   arrayBuffers: ArrayBuffer[]
+  debug?: boolean
 }
 
 export class MultiBanger extends Player implements IBanger {
   name: string
   audioBuffers: AudioBuffer[]
   loading = true
+  debug: boolean
 
   /**
    * Used for playing libraries of similar SHORT sounds
@@ -18,10 +20,11 @@ export class MultiBanger extends Player implements IBanger {
    * NOTE: Has no stop control1!
    *
    */
-  constructor(params: Params) {
+  constructor(params: MultiBangerProps) {
     super(params)
     this.name = params.name
     this.audioBuffers = []
+    this.debug = params.debug ?? false
 
     this.init(params.arrayBuffers)
   }
@@ -45,7 +48,9 @@ export class MultiBanger extends Player implements IBanger {
 
     const i = Math.floor(Math.random() * this.audioBuffers.length)
 
-    console.log('this.source', i, this.audioBuffers.length)
+    if (this.debug) {
+      console.log('this.source', i, this.audioBuffers.length)
+    }
 
     this.source.buffer = this.audioBuffers[i]
     this.source.addEventListener('ended', () => {
@@ -59,7 +64,11 @@ export class MultiBanger extends Player implements IBanger {
     this.loading = false
   }
 
-  handleStop = () => console.info('MultiBanger has no stop control!')
+  handleStop = () => {
+    if (this.debug) {
+      console.info('MultiBanger has no stop control!')
+    }
+  }
 
   play = () => {
     this.handlePlay()

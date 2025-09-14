@@ -1,5 +1,6 @@
 export { Banger } from './classes/Banger'
 export { MultiBanger } from './classes/MultiBanger'
+export type { MultiBangerProps } from './classes/MultiBanger'
 export {
   SpatialPlayer,
   SpatialBanger,
